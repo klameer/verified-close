@@ -1,0 +1,52 @@
+# Golden set: known answers for the Caldergate May-26 close, agreed with the controller.
+# Rerun after ANY change to the skills ("rerun the golden set"). Every check asserts a
+# computed VALUE, never a flag, so tuning materiality keeps it green and broken arithmetic
+# turns it red. A red golden set means the change is not accepted.
+
+[[check]]
+id = "G1"
+name = "bank statement closes to canon"
+metric = "statement_close"
+expect = 9882613.23
+
+[[check]]
+id = "G2"
+name = "cashbook opening + movements == closing == canon"
+metric = "cashbook_close"
+expect = 8911388.92
+
+[[check]]
+id = "G3"
+name = "rec identity to the penny"
+metric = "rec_difference"
+expect = 0.0
+
+[[check]]
+id = "G4"
+name = "six closing items"
+metric = "closing_items"
+expect = 6
+
+[[check]]
+id = "G4b"
+name = "exactly one stale item: cheque 004182, 1,850.00"
+metric = "stale_item"
+expect = { match = "004182", amount = -1850.00 }
+
+[[check]]
+id = "G5"
+name = "Industrial Consumables & Packaging variance (thousands)"
+metric = "variance:Industrial Consumables & Packaging"
+expect = 103.0
+
+[[check]]
+id = "G6"
+name = "Cost of goods sold variance (thousands)"
+metric = "variance:Cost of goods sold"
+expect = 244.0
+
+[[check]]
+id = "G6b"
+name = "total variance across all lines (thousands)"
+metric = "total_variance"
+expect = 545.0

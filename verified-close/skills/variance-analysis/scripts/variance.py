@@ -1,11 +1,13 @@
 """Compute MTD variances: trial balance actuals vs the budget workbook.
 
-Usage: variance.py tb.json budget.xlsx <period> <flag_threshold_k> outdir/
+Usage: variance.py tb.json budget.xlsx <period> <flag_threshold_k> outdir/                    "<entity>" "<footer>" [commentary.md]
 
 Writes outdir/variance.json and "outdir/Variance Report - <period>.xlsx".
-All figures GBP thousands (the units both sources carry). Variance sign
+All figures in thousands (the units both sources carry). Variance sign
 convention: actual - budget (revenue lines: positive = ahead of budget;
-cost lines are reported the same way and read in context).
+cost lines are reported the same way and read in context). With a
+commentary file, the workbook gains a Commentary sheet holding it verbatim:
+the reviewer signs the numbers and the words in one document.
 Requires openpyxl.
 """
 import json
@@ -33,8 +35,9 @@ def read_budget(path: str, period: str) -> dict:
     return budgets
 
 
-def main(tb_path: str, budget_path: str, period: str, threshold_k: str, outdir: str) -> None:
-    tb = json.load(open(tb_path))
+def main(tb_path: str, budget_path: str, period: str, threshold_k: str, outdir: str,
+         entity: str, footer: str, commentary_path: str = "") -> None:
+    tb = json.load(open(tb_path, encoding="utf-8"))
     assert tb["period"] == period, f"trial balance is {tb['period']}, wanted {period}"
     budgets = read_budget(budget_path, period)
     threshold = float(threshold_k)
@@ -61,15 +64,15 @@ def main(tb_path: str, budget_path: str, period: str, threshold_k: str, outdir: 
     }
     out = Path(outdir)
     out.mkdir(parents=True, exist_ok=True)
-    json.dump(result, open(out / "variance.json", "w"), indent=1)
+    json.dump(result, open(out / "variance.json", "w", encoding="utf-8"), indent=1)
 
     wb = openpyxl.Workbook()
     ws = wb.active
     ws.title = "Variance"
-    ws["A1"] = f"Caldergate Distribution Group Ltd — Variance Report {period} (£'000, MTD)"
+    ws["A1"] = f"{entity} — Variance Report {period} (thousands, MTD)"
     ws["A1"].font = Font(bold=True, size=12)
-    ws["A2"] = (f"Actual per trial balance; budget per Budget FY26 workbook. "
-                f"Flag threshold ±{threshold:,.0f}. Fictitious data (demo estate).")
+    ws["A2"] = (f"Actual per trial balance; budget per {Path(budget_path).stem}. "
+                f"Flag threshold ±{threshold:,.0f}. {footer}")
     ws.append([])
     ws.append(["Line", "Actual", "Budget", "Variance", "Var %", "Flag"])
     for c in ws[4]:
@@ -86,10 +89,15 @@ def main(tb_path: str, budget_path: str, period: str, threshold_k: str, outdir: 
     for row in ws.iter_rows(min_row=5, min_col=2, max_col=4):
         for cell in row:
             cell.number_format = "#,##0"
+    if commentary_path:
+        notes = wb.create_sheet("Commentary")
+        notes.column_dimensions["A"].width = 110
+        for para in Path(commentary_path).read_text(encoding="utf-8").strip().splitlines():
+            notes.append([para])
     wb.save(out / f"Variance Report - {period}.xlsx")
     print(f"{result['flagged_count']}/{result['line_count']} lines flagged at ±{threshold:,.0f}k; "
           f"total variance {result['total_variance_k']:+,.1f}k -> {out}")
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:6])
+    main(*sys.argv[1:9])

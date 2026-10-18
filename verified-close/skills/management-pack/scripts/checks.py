@@ -1,14 +1,14 @@
 """Tie-outs for the built pack. Hard-fails on figure mismatches; lists any
 commentary number it cannot trace to the signed sources for the reviewer.
 
-Usage: checks.py out.pptx act1/reconciliation.json act2/variance.json commentary.txt
+Usage: checks.py out.pptx step1/reconciliation.json step2/variance.json commentary.txt
 
   C1 the four cash figures in the pack == reconciliation.json, to the penny
   C2 every variance row in the pack == variance.json (actual, budget, var)
   C3 totals row matches
   W1 commentary numbers not present in the signed sources are LISTED for
-     the reviewer to verify against the cited document (does not fail —
-     Door 1 is procedural: the reviewer verifies, the pack records)
+     the reviewer to verify against the cited document (does not fail:
+     the reviewer verifies, the pack records)
 Requires python-pptx.
 """
 import json
@@ -31,8 +31,8 @@ def _all_text(prs):
 
 
 def main(pptx_path, rec_path, var_path, commentary_path):
-    rec = json.load(open(rec_path))
-    var = json.load(open(var_path))
+    rec = json.load(open(rec_path, encoding="utf-8"))
+    var = json.load(open(var_path, encoding="utf-8"))
     text = _all_text(Presentation(pptx_path))
     failures = []
 
@@ -61,7 +61,7 @@ def main(pptx_path, rec_path, var_path, commentary_path):
               rs["add_uncleared_lodgements_gbp"], rs["cashbook_closing_balance_gbp"]] + \
              [abs(i["amount_gbp"]) for i in rec["closing_items"]]:
         known |= {f"{v:,.2f}", f"{v:,.0f}", f"{v / 1000:,.0f}", f"{v / 1000:,.1f}"}
-    known |= {f"{var['flag_threshold_k']:,.0f}", "2026"}
+    known.add(f"{var['flag_threshold_k']:,.0f}")
 
     unsourced = []
     commentary = open(commentary_path, encoding="utf-8").read()
@@ -69,7 +69,7 @@ def main(pptx_path, rec_path, var_path, commentary_path):
         clean = num.strip(",")
         if not clean or float(clean.replace(",", "")) < 32:
             continue
-        if clean not in known:
+        if clean not in known and not re.fullmatch(r"20\d\d", clean):  # years are not figures
             unsourced.append(num)
 
     if failures:

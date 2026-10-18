@@ -1,8 +1,11 @@
-"""Write the signed bank reconciliation as a filing-ready workbook.
+"""Write the bank reconciliation as a filing-ready workbook (DRAFT or signed).
 
-Usage: write_rec.py reconciliation.json <period_label> <reviewer> out.xlsx
+Usage: write_rec.py reconciliation.json <period_label> <reviewer> out.xlsx \
+                    "<entity>" "<account>" "<bank_line>" "<footer>"
   e.g. write_rec.py step1/reconciliation.json "31 May 2026" "K. Lameer" \
-       "step1/Bank Reconciliation - Operating Account - May-26.xlsx"
+       "Bank Reconciliation - Operating Account - May-26 SIGNED KL.xlsx" \
+       "Caldergate Distribution Group Ltd" "Operating Account" \
+       "Pennine Commercial Bank plc, 99-42-07 / 00341275" "<footer text>"
 
 Same layout as the prior-month rec, so next month's parse_rec.py reads this
 file back as its opening position — the close feeds itself. Item labels
@@ -15,9 +18,6 @@ from datetime import date
 
 import openpyxl
 from openpyxl.styles import Font
-
-FOOTER = ("Caldergate Distribution Group Ltd — Confidential. "
-          "Fictitious data (demo estate).")
 
 
 def _label(item: dict) -> str:
@@ -36,17 +36,19 @@ def _status(item: dict) -> str:
     return f"Expected to clear {item['expected_clearing']}"
 
 
-def main(rec_path: str, period_label: str, reviewer: str, out_path: str) -> None:
-    rec = json.load(open(rec_path))
+def main(rec_path: str, period_label: str, reviewer: str, out_path: str,
+         entity: str, account: str, bank_line: str, footer: str) -> None:
+    rec = json.load(open(rec_path, encoding="utf-8"))
     rs = rec["reconciliation_statement"]
     wb = openpyxl.Workbook()
     ws = wb.active
     ws.title = "Bank Reconciliation"
 
     rows: list[tuple] = [
-        ("Caldergate Distribution Group Ltd", None, None),
-        ("Bank reconciliation — Operating Account (Pennine Commercial Bank plc, 99-42-07 / 00341275)", None, None),
-        (f"As at {period_label}   |   Prepared: close-pack-bank-rec (AI-assisted, script-computed)   |   Reviewed: {reviewer}", None, None),
+        (entity, None, None),
+        (f"Bank reconciliation — {account} ({bank_line})", None, None),
+        (f"As at {period_label}   |   Prepared: verified-close reconciliation "
+         f"(AI-assisted, script-computed)   |   Reviewed: {reviewer}", None, None),
         (None, None, None),
         (f"Balance per bank statement at {period_label}", rs["balance_per_bank_gbp"], "Status"),
         (None, None, None),
@@ -65,7 +67,7 @@ def main(rec_path: str, period_label: str, reviewer: str, out_path: str) -> None
         (f"Statement lines explained: {rec['matched']}/{rec['statement_lines']}; "
          "checks C1-C5 passed; sign-off sealed in the close log.", None, None),
         (None, None, None),
-        (FOOTER, None, None),
+        (footer, None, None),
     ]
     for r in rows:
         ws.append(r)
@@ -77,8 +79,8 @@ def main(rec_path: str, period_label: str, reviewer: str, out_path: str) -> None
     for row in ws.iter_rows(min_col=2, max_col=2):
         row[0].number_format = "#,##0.00"
     wb.save(out_path)
-    print(f"reconciliation filed: {out_path}")
+    print(f"reconciliation written: {out_path}")
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:5])
+    main(*sys.argv[1:9])

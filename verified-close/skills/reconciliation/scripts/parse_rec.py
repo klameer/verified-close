@@ -1,6 +1,10 @@
-"""Parse a Caldergate bank reconciliation xlsx into opening-position JSON.
+"""Parse last month's bank reconciliation xlsx into opening-position JSON.
 
-Usage: parse_rec.py "Bank Reconciliation - ... Apr-26.xlsx" opening_rec.json
+Usage: parse_rec.py "Bank Reconciliation - ... Apr-26.xlsx" opening_rec.json <period_end>
+
+Reads the layout write_rec.py writes, so each month's signed rec is next
+month's opening position. Item labels like "(14 Apr)" are dated in the
+year of <period_end> (ISO), or the year before when that would be later.
 
 Extracts: bank balance, book balance, and every reconciling item with its
 signed amount (negative = unpresented payment, positive = uncleared
@@ -18,17 +22,20 @@ MONTHS = {m: i for i, m in enumerate(
     ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], 1)}
 
 
-def _label_date(label: str, year: int) -> str | None:
+def _label_date(label: str, end: date) -> str | None:
     m = re.search(r"\((\d{1,2}) (\w{3})(?:[^)]*)?\)\s*$", label)
-    return date(year, MONTHS[m.group(2)], int(m.group(1))).isoformat() if m else None
+    if not m:
+        return None
+    d = date(end.year, MONTHS[m.group(2)], int(m.group(1)))
+    return (d if d <= end else d.replace(year=end.year - 1)).isoformat()
 
 
-def main(xlsx_path: str, out_path: str) -> None:
+def main(xlsx_path: str, out_path: str, period_end: str) -> None:
     ws = openpyxl.load_workbook(xlsx_path).active
     result = {"source_file": xlsx_path.split("/")[-1].split("\\")[-1],
               "as_at": None, "bank_balance_gbp": None, "book_balance_gbp": None,
               "items": []}
-    year = 2026
+    end = date.fromisoformat(period_end)
     for label, value, status in ws.iter_rows(values_only=True):
         if not label:
             continue
@@ -44,7 +51,7 @@ def main(xlsx_path: str, out_path: str) -> None:
                 "description": text,
                 "amount_gbp": round(float(value), 2),
                 "kind": "unpresented_payment" if value < 0 else "uncleared_lodgement",
-                "item_date": _label_date(text, year),
+                "item_date": _label_date(text, end),
                 "status": status or "",
             })
     assert result["bank_balance_gbp"] and result["book_balance_gbp"] and result["items"]
@@ -55,4 +62,4 @@ def main(xlsx_path: str, out_path: str) -> None:
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:3])
+    main(*sys.argv[1:4])

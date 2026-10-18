@@ -1,29 +1,29 @@
 """Bank reconciliation: statement vs cashbook + last month's rec b/f. Stdlib.
 
-Usage: reconcile.py statement.json cashbook.json opening_rec.json out.json
+Usage: reconcile.py statement.json cashbook.json opening_rec.json out.json <period_end> <stale_days>
+  e.g. reconcile.py ... 2026-05-31 42
 
 Model (mirrors how the close actually works):
-  every May statement line is explained by either a May cashbook entry
+  every statement line in the period is explained by either a cashbook entry
   (matched on bank narrative + amount, else amount + value date) or an
   opening reconciling item clearing this month (matched on amount).
   Closing items = cashbook entries valuing after month-end (unpresented /
   uncleared by direction) + opening items that still haven't cleared —
-  those are flagged STALE when older than STALE_DAYS, with a question the
+  those are flagged STALE when older than <stale_days>, with a question the
   reviewer must answer.
 """
 import json
 import sys
 from datetime import date
 
-STALE_DAYS = 42
-PERIOD_END = date(2026, 5, 31)
-
-
 def _net(row: dict) -> float:
     return round(float(row["paid_in_gbp"] or 0) - float(row["paid_out_gbp"] or 0), 2)
 
 
-def main(statement_path: str, cashbook_path: str, opening_path: str, out_path: str) -> None:
+def main(statement_path: str, cashbook_path: str, opening_path: str, out_path: str,
+         period_end: str, stale_days: str) -> None:
+    end = date.fromisoformat(period_end)
+    stale_after = int(stale_days)
     stmt = json.load(open(statement_path))
     cb = json.load(open(cashbook_path))
     opening = json.load(open(opening_path))
@@ -68,12 +68,12 @@ def main(statement_path: str, cashbook_path: str, opening_path: str, out_path: s
             "amount_gbp": e["net"], "source": "cashbook",
             "kind": "unpresented_payment" if e["net"] < 0 else "uncleared_lodgement",
             "stale": False,
-            "reading": "Booked in May; hits the bank after month-end. Timing difference.",
+            "reading": "Booked in the period; hits the bank after period end. Timing difference.",
         })
     for j in unused_opening:
         item = opening["items"][j]
-        age = (PERIOD_END - date.fromisoformat(item["item_date"])).days if item["item_date"] else None
-        stale = age is not None and age > STALE_DAYS
+        age = (end - date.fromisoformat(item["item_date"])).days if item["item_date"] else None
+        stale = age is not None and age > stale_after
         closing_items.append({
             "description": item["description"], "book_date": item["item_date"],
             "expected_clearing": "OPEN", "amount_gbp": item["amount_gbp"],
@@ -115,4 +115,4 @@ def main(statement_path: str, cashbook_path: str, opening_path: str, out_path: s
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:5])
+    main(*sys.argv[1:7])

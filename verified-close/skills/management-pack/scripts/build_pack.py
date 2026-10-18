@@ -57,10 +57,11 @@ def _add_table(slide, anchor_shape, rows: list[list], col_widths: list[float], b
 
 
 def main(template, rec_path, var_path, commentary_path, log_path, period, out_path):
-    rec = json.load(open(rec_path))
-    var = json.load(open(var_path))
+    rec = json.load(open(rec_path, encoding="utf-8"))
+    var = json.load(open(var_path, encoding="utf-8"))
     commentary = open(commentary_path, encoding="utf-8").read().strip()
-    signoffs = [json.loads(l) for l in open(log_path)] if log_path != "-" else []
+    signoffs = ([json.loads(l) for l in open(log_path, encoding="utf-8") if l.strip()]
+                if log_path != "-" else [])
 
     prs = Presentation(template)
     slides = list(prs.slides)
@@ -95,7 +96,7 @@ def main(template, rec_path, var_path, commentary_path, log_path, period, out_pa
 
     lines = [f"{s['step']}: signed {s['signed_at_utc']} by {s['reviewer']} "
              f"(sha256 {s['result_sha256'][:12]}…)" for s in signoffs]
-    lines.append(f"Units: variance figures £'000; cash figures actual GBP. "
+    lines.append(f"Units: variance figures in thousands; cash figures in full. "
                  f"Flag threshold ±{var['flag_threshold_k']:,.0f}k.")
     _fill_text(slides[4], "{{SIGNOFFS}}", "\n".join(lines))
 

@@ -1,0 +1,39 @@
+# Verified Close: one entity's month-end close.
+# The skills read this file from the close folder; every path below is relative to it.
+# Caldergate Distribution Group is fictional (a UK distribution group, close-v2 canon).
+
+[entity]
+name = "Caldergate Distribution Group Ltd"
+currency = "GBP"
+fictional = true            # adds "Fictitious data" to every output footer
+
+[period]
+id = "May-26"
+prior = "Apr-26"
+end = 2026-05-31
+label = "31 May 2026"
+
+[bank]
+account = "Operating Account"
+line = "Pennine Commercial Bank plc, 99-42-07 / 00341275"
+stale_days = 42             # an uncleared item older than this needs a reviewer decision
+
+[variance]
+materiality_k = 100         # flag threshold: absolute MTD variance, in thousands
+units = "£'000"
+
+[folders]
+exports = "02 System Exports/{period}"      # what the ERP gives you: statement, cashbook, trial balance
+templates = "01 Templates & Budget"
+filing = "05 Month-End/{period}"            # the reviewer's surface: DRAFTs, SIGNED copies, binder
+prior_filing = "05 Month-End/{prior}"       # last month's signed rec = this month's opening position
+work = "_work/{period}"                     # scripts' working files and the close log
+
+[files]
+statement = "Bank Statement - {period}.json"
+cashbook = "Cashbook - {period}.json"
+trial_balance = "Trial Balance - {period}.json"
+budget = "Budget FY26 - by line.xlsx"
+pack_template = "Management Pack Template.pptx"
+close_notes = "00 Governance/close-notes.md"  # what the commentary may cite beyond the figures
+goldens = "00 Governance/golden-set.toml"     # known answers, rerun after any change

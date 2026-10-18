@@ -21,9 +21,9 @@ def main(tb_path: str, budget_path: str, period: str, outdir: str) -> None:
     sys.path.insert(0, str(Path(__file__).parent))
     from variance import read_budget  # same parser, independent recompute
 
-    tb = json.load(open(tb_path))
+    tb = json.load(open(tb_path, encoding="utf-8"))
     budgets = read_budget(budget_path, period)
-    rec = json.load(open(Path(outdir) / "variance.json"))
+    rec = json.load(open(Path(outdir) / "variance.json", encoding="utf-8"))
     failures = []
 
     json_lines = {l["line"]: l for l in rec["lines"]}
@@ -42,7 +42,7 @@ def main(tb_path: str, budget_path: str, period: str, outdir: str) -> None:
     if round(sum(l["variance_k"] for l in rec["lines"]), 1) != rec["total_variance_k"]:
         failures.append("C3 json total does not cross-foot")
 
-    ws = openpyxl.load_workbook(Path(outdir) / f"Variance Report - {period}.xlsx").active
+    ws = openpyxl.load_workbook(Path(outdir) / f"Variance Report - {period}.xlsx")["Variance"]
     seen = 0
     for row in ws.iter_rows(min_row=5, values_only=True):
         line = row[0]

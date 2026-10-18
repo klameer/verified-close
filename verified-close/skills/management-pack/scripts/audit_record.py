@@ -1,42 +1,47 @@
-"""Append one signed audit record to the close log. Stdlib only.
+"""Append one signed record to the close log. Stdlib only.
 
-Usage: audit_record.py <step> <result.json> <reviewer_initials> <log.jsonl> ["<decision note>"]
+Called by the sign_step scripts, never by hand. Each record seals what the
+reviewer signed: the sha256 of the result file (the figures) and of every
+other file signed with it (the filed copy, the commentary). closecfg's
+require_seal() re-hashes them before any later step may use the figures,
+and the audit binder prints them.
 
-The record carries a sha256 of the result file so the binder can prove the
-signed figures are the filed figures. The optional note records reviewer
-decisions made at the gate (e.g. "stale cheque 004182: reissue") so the
-close log carries them; the binder prints it on the step page.
+Every scripted skill ships an identical copy of this file.
 """
 import datetime
-import hashlib
 import json
-import sys
+from pathlib import Path
+
+from closecfg import sha256
 
 
-def main(step: str, result_path: str, reviewer: str, log_path: str, note: str = "") -> None:
-    raw = open(result_path, "rb").read()
+def _rel(close, path: Path) -> str:
+    return Path(path).resolve().relative_to(close.root).as_posix()
+
+
+def append(close, step: str, result_path: Path, reviewer: str, note: str = "",
+           also_sealed: list[Path] = ()) -> dict:
+    raw = Path(result_path).read_bytes()
     try:
-        result = json.loads(raw)
-        summary = {k: v for k, v in result.items()
+        summary = {k: v for k, v in json.loads(raw).items()
                    if isinstance(v, (str, int, float)) and k != "matches"}
     except (UnicodeDecodeError, json.JSONDecodeError):
-        summary = {"file": result_path.replace("\\", "/").rsplit("/", 1)[-1],
-                   "bytes": len(raw)}
+        summary = {"file": Path(result_path).name, "bytes": len(raw)}
     record = {
         "step": step,
+        "period": close.period,
         "signed_at_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
         "reviewer": reviewer,
-        "result_file": result_path,
-        "result_sha256": hashlib.sha256(raw).hexdigest(),
+        "result_file": _rel(close, result_path),
+        "result_sha256": sha256(result_path),
+        "sealed_files": [{"file": _rel(close, p), "sha256": sha256(p)} for p in also_sealed],
         "summary": summary,
     }
     if note:
         record["note"] = note
-    with open(log_path, "a") as f:
+    with open(close.log_path, "a", encoding="utf-8") as f:
         f.write(json.dumps(record) + "\n")
-    print(f"audit record appended: {step} signed by {reviewer}"
-          + (f" ({note})" if note else ""))
-
-
-if __name__ == "__main__":
-    main(*sys.argv[1:6])
+    print(f"close log: {step} signed by {reviewer}, sealed sha256 {record['result_sha256'][:12]}"
+          + (f" (+{len(also_sealed)} file(s))" if also_sealed else "")
+          + (f"; decision: {note}" if note else ""))
+    return record

@@ -1,45 +1,46 @@
-"""Run the whole step-3 pipeline in one invocation (speed: one call, not three).
+"""Step 3 of the close: the management pack, filled from signed figures only.
 
-Usage: run_step3.py <template.pptx> <rec.json> <var.json> <commentary.txt> <close-log.jsonl> <period> <outdir>
-  e.g. run_step3.py step3/template.pptx step1/reconciliation.json \
-       step2/variance.json step3/commentary.txt audit/close-log.jsonl May-26 step3
+Usage: run_step3.py <close.toml>
 
-build_pack -> checks -> DRAFT copy. Each stage's output is echoed verbatim
-(including any REVIEWER MUST VERIFY list — carry it into the gate message);
-hard check failures stop the pipeline with exit 1. Writes:
-  "<outdir>/Management Pack - <period>.pptx",
-  "<outdir>/Management Pack - <period> DRAFT.pptx"
+Gate: refuses to run until steps 1 and 2 are signed and both seals hold
+(a figure edited after sign-off stops the pack). Needs the pack commentary
+at <work>/step3/commentary.txt. build_pack -> checks -> DRAFT filed. Hard
+check failures stop with exit 1; commentary numbers the checks cannot trace
+to a signed source are listed as REVIEWER MUST VERIFY for the gate.
 """
 import shutil
-import subprocess
 import sys
 from pathlib import Path
+
+from closecfg import Close, run_stage, stop
 
 HERE = Path(__file__).resolve().parent
 
 
-def run(script: str, *args) -> None:
-    result = subprocess.run([sys.executable, str(HERE / script), *map(str, args)],
-                            capture_output=True, text=True)
-    if result.stdout:
-        print(result.stdout, end="")
-    if result.returncode != 0:
-        print(result.stderr, end="", file=sys.stderr)
-        print(f"STEP 3 STOPPED at {script} (exit {result.returncode}) - do not present results")
-        sys.exit(1)
+def main(toml: str) -> None:
+    close = Close(toml)
+    close.require_signed("step1", "step2")
+    close.require_unsigned("step3")
+    w = close.work("step3")
+    commentary = w / "commentary.txt"
+    if not commentary.exists():
+        stop(f"write the pack commentary to {commentary.relative_to(close.root).as_posix()} "
+             "first: the signed step 2 commentary on the flagged lines, plus one line on the "
+             "bank position, every number with its source")
+    template = w / "template.pptx"
+    shutil.copyfile(close.folder("templates") / close.file("pack_template"), template)
+    rec = close.work("step1") / "reconciliation.json"
+    var = close.work("step2") / "variance.json"
+    pack = w / f"Management Pack - {close.period}.pptx"
 
-
-def main(template, rec, var, commentary, log, period, outdir) -> None:
-    out = Path(outdir)
-    out.mkdir(parents=True, exist_ok=True)
-    pack = out / f"Management Pack - {period}.pptx"
-    draft = out / f"Management Pack - {period} DRAFT.pptx"
-
-    run("build_pack.py", template, rec, var, commentary, log, period, pack)
-    run("checks.py", pack, rec, var, commentary)
-    shutil.copyfile(pack, draft)
-    print(f"step 3 pipeline complete: {pack} + {draft}")
+    run_stage(HERE / "build_pack.py", template, rec, var, commentary, close.log_path,
+              close.period, pack, label="STEP 3")
+    run_stage(HERE / "checks.py", pack, rec, var, commentary, label="STEP 3")
+    draft = f"Management Pack - {close.period} DRAFT.pptx"
+    shutil.copyfile(pack, w / draft)
+    close.file_into(w / draft)
+    close.confirm_filed([draft])
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:8])
+    main(*sys.argv[1:2])

@@ -1,43 +1,64 @@
-"""Run the whole step-2 pipeline in one invocation (speed: one call, not three).
+"""Step 2 of the close: variance report vs budget, computed, checked, filed as DRAFT.
 
-Usage: run_step2.py <tb.json> <budget.xlsx> <period> <flag_threshold_k> <outdir>
-  e.g. run_step2.py step2/tb.json step2/budget.xlsx May-26 100 step2
+Usage: run_step2.py <close.toml>
 
-variance -> checks -> DRAFT copy. Each stage's output is echoed verbatim; any
-failing stage stops the pipeline with exit 1. Writes:
-  <outdir>/variance.json, "<outdir>/Variance Report - <period>.xlsx",
-  "<outdir>/Variance Report - <period> DRAFT.xlsx"
+Gate: refuses to run until step 1 is signed and its seal still holds.
+First call: computes and re-derives every variance (variance -> checks) and
+prints the table. The commentary for the flagged lines is then written to
+<work>/step2/commentary.md. Second call: rebuilds the report with that
+commentary as its own sheet, re-checks, and files the DRAFT for review.
 """
+import json
 import shutil
-import subprocess
 import sys
 from pathlib import Path
+
+from closecfg import Close, run_stage
 
 HERE = Path(__file__).resolve().parent
 
 
-def run(script: str, *args) -> None:
-    result = subprocess.run([sys.executable, str(HERE / script), *map(str, args)],
-                            capture_output=True, text=True)
-    if result.stdout:
-        print(result.stdout, end="")
-    if result.returncode != 0:
-        print(result.stderr, end="", file=sys.stderr)
-        print(f"STEP 2 STOPPED at {script} (exit {result.returncode}) - do not present results")
-        sys.exit(1)
+def table(close: Close, var: dict) -> None:
+    print(f"\nVARIANCE VS BUDGET ({close.variance['units']}, MTD {close.period})   "
+          f"flag at ±{var['flag_threshold_k']:,.0f}")
+    print(f"  {'Line':<38}{'Actual':>9}{'Budget':>9}{'Var':>9}{'Var %':>8}")
+    for l in var["lines"]:
+        pct = "" if l["variance_pct"] is None else f"{l['variance_pct']:+.1f}%"
+        print(f"  {l['line']:<38}{l['mtd_actual_k']:>9,.0f}{l['mtd_budget_k']:>9,.0f}"
+              f"{l['variance_k']:>+9,.1f}{pct:>8}{'  FLAG' if l['flagged'] else ''}")
+    print(f"  {'TOTAL':<38}{var['total_actual_k']:>9,.0f}{var['total_budget_k']:>9,.0f}"
+          f"{var['total_variance_k']:>+9,.1f}")
 
 
-def main(tb, budget, period, threshold_k, outdir) -> None:
-    out = Path(outdir)
-    out.mkdir(parents=True, exist_ok=True)
-    report = out / f"Variance Report - {period}.xlsx"
-    draft = out / f"Variance Report - {period} DRAFT.xlsx"
+def main(toml: str) -> None:
+    close = Close(toml)
+    close.require_signed("step1")
+    close.require_unsigned("step2")
+    w = close.work("step2")
+    shutil.copyfile(close.folder("exports") / close.file("trial_balance"), w / "tb.json")
+    budget = w / close.file("budget")
+    shutil.copyfile(close.folder("templates") / close.file("budget"), budget)
+    commentary = w / "commentary.md"
 
-    run("variance.py", tb, budget, period, threshold_k, out)
-    run("checks.py", tb, budget, period, out)
-    shutil.copyfile(report, draft)
-    print(f"step 2 pipeline complete: {out / 'variance.json'} + {draft}")
+    args = [w / "tb.json", budget, close.period, close.variance["materiality_k"], w,
+            close.entity, close.footer()]
+    run_stage(HERE / "variance.py", *args, *([commentary] if commentary.exists() else []),
+              label="STEP 2")
+    run_stage(HERE / "checks.py", w / "tb.json", budget, close.period, w, label="STEP 2")
+    var = json.load(open(w / "variance.json", encoding="utf-8"))
+    table(close, var)
+
+    if not commentary.exists():
+        rel = commentary.relative_to(close.root).as_posix()
+        print(f"\nNEXT: write the commentary for the {var['flagged_count']} flagged line(s) to "
+              f"{rel}, then run this again to file the DRAFT.")
+        return
+    draft = f"Variance Report - {close.period} DRAFT.xlsx"
+    shutil.copyfile(w / f"Variance Report - {close.period}.xlsx", w / draft)
+    close.file_into(w / draft)
+    close.confirm_filed([draft])
+    print("DRAFT filed with the commentary sheet: ready for the reviewer.")
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:6])
+    main(*sys.argv[1:2])
