@@ -16,14 +16,16 @@ def test_full_close_end_to_end(close):
     out = close.ok("close_out.py")
     assert "seals verified" in out
     records = [json.loads(l) for l in (close.work / "audit" / "close-log.jsonl").read_text().splitlines()]
-    assert [r["step"] for r in records] == ["step1", "step2", "step3"]
+    assert [r["step"] for r in records] == ["step1", "step2", "step3", "closeout"]
     assert records[0]["note"] == "cheque 004182: stop and reissue"
     for name in ["Bank Reconciliation - Operating Account - May-26 SIGNED KL.xlsx",
                  "Variance Report - May-26 SIGNED KL.xlsx",
                  "Management Pack - May-26 SIGNED KL.pptx",
                  "Close Binder - May-26.pdf", "close-log.jsonl"]:
         assert (close.filing / name).exists(), name
-    assert "ready" in close.ok("status.py")
+    board = close.ok("status.py")
+    assert "[x] Close-out (audit binder)" in board and "ready" not in board
+    assert "already closed out" in close.run("close_out.py").stdout
 
 
 def test_signed_rec_feeds_next_month(close):

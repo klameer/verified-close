@@ -30,9 +30,15 @@ def main(argv: list[str]) -> None:
             next_seen = True
         else:
             print(f"[ ] {label:<28} blocked (needs {STEP_TITLES[steps[i - 1]].split('  ')[0]} signed)")
-    ready = len(signed) == len(steps)
-    print(f"[ ] {'Close-out (audit binder)':<28} "
-          + (f'ready - say "Close out {close.period}"' if ready else "blocked (needs all three steps signed)"))
+    done = signed.get("closeout")
+    if done:
+        when = done["signed_at_utc"][:16].replace("T", " ")
+        print(f"[x] {'Close-out (audit binder)':<28} filed {when}Z  sha256 {done['result_sha256'][:12]}")
+    else:
+        ready = all(s in signed for s in steps)
+        print(f"[ ] {'Close-out (audit binder)':<28} "
+              + (f'ready - say "Close out {close.period}"' if ready
+                 else "blocked (needs all three steps signed)"))
     if now:
         print(f"now: {now}")
     print("derived from the close log: a step is done only when its signed record is in the log")
