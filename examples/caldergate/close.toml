@@ -22,6 +22,14 @@ stale_days = 42             # an uncleared item older than this needs a reviewer
 materiality_k = 100         # flag threshold: absolute MTD variance, in thousands
 units = "£'000"
 
+[pnl]
+# Every trial-balance line sits in exactly one group. The report builds the subtotals from
+# these: total revenue, gross margin, total operating expenses, EBITDA, net result.
+revenue = ["Facilities & Safety Supplies", "Industrial Consumables & Packaging", "Office & Print Solutions"]
+cost_of_sales = ["Cost of goods sold"]
+operating_expenses = ["Warehouse & Logistics", "Sales & Account Management", "Procurement & Merchandising", "IT & Digital", "General & Administrative"]
+below_ebitda = ["Depreciation & amortisation", "Interest expense, net", "Taxation"]
+
 [folders]
 exports = "02 System Exports/{period}"      # what the ERP gives you: statement, cashbook, trial balance
 templates = "01 Templates & Budget"

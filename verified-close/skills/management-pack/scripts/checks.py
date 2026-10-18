@@ -5,7 +5,7 @@ Usage: checks.py out.pptx step1/reconciliation.json step2/variance.json commenta
 
   C1 the four cash figures in the pack == reconciliation.json, to the penny
   C2 every variance row in the pack == variance.json (actual, budget, var)
-  C3 totals row matches
+  C3 every P&L subtotal row (revenue, gross margin, opex, EBITDA, net result) verbatim
   W1 commentary numbers not present in the signed sources are LISTED for
      the reviewer to verify against the cited document (does not fail:
      the reviewer verifies, the pack records)
@@ -48,14 +48,16 @@ def main(pptx_path, rec_path, var_path, commentary_path):
         row = f"{l['line']}|{l['mtd_actual_k']:,.0f}|{l['mtd_budget_k']:,.0f}|{l['variance_k']:+,.1f}"
         if row not in text:
             failures.append(f"C2 variance row not found verbatim: {l['line']}")
-    if f"TOTAL|{var['total_actual_k']:,.0f}|{var['total_budget_k']:,.0f}|{var['total_variance_k']:+,.1f}" not in text:
-        failures.append("C3 totals row missing/mismatched")
+    for t in var["subtotals"]:
+        row = f"{t['name']}|{t['mtd_actual_k']:,.0f}|{t['mtd_budget_k']:,.0f}|{t['variance_k']:+,.1f}"
+        if row not in text:
+            failures.append(f"C3 subtotal row not found verbatim: {t['name']}")
 
     known = set()
-    for l in var["lines"]:
+    for l in var["lines"] + var["subtotals"]:
         known |= {f"{abs(l['mtd_actual_k']):,.0f}", f"{abs(l['mtd_budget_k']):,.0f}",
                   f"{abs(l['variance_k']):,.0f}", f"{abs(l['variance_k']):,.1f}"}
-        if l["variance_pct"] is not None:
+        if l.get("variance_pct") is not None:
             known.add(f"{abs(l['variance_pct']):,.1f}")
     for v in [rs["balance_per_bank_gbp"], rs["less_unpresented_payments_gbp"],
               rs["add_uncleared_lodgements_gbp"], rs["cashbook_closing_balance_gbp"]] + \
@@ -78,7 +80,7 @@ def main(pptx_path, rec_path, var_path, commentary_path):
             print(" -", f)
         sys.exit(1)
     print("checks passed: C1 cash figures to the penny, C2 every variance row "
-          "verbatim, C3 totals")
+          "verbatim, C3 every P&L subtotal verbatim")
     if unsourced:
         print("REVIEWER MUST VERIFY - commentary numbers not in the signed "
               "sources (check them against the cited documents):")

@@ -19,9 +19,11 @@ job is the narrative on top of the script's numbers. Run from the close folder a
 `python <this skill's folder>/scripts/<script> close.toml`.
 
 1. `run_step2.py close.toml` refuses until step 1 is signed. It computes actual minus budget per
-   line from the trial balance export and the budget workbook, flags lines at close.toml's
-   materiality, re-derives every figure (checks C1-C4) and prints the table. If it stops, report
-   verbatim and STOP.
+   line from the trial balance export and the budget workbook, and lays the lines out as a P&L
+   using close.toml's [pnl] groups. The subtotals are total revenue, gross margin, total
+   operating expenses, EBITDA and net result, and every row is marked F or A for its effect on
+   profit. It flags lines at close.toml's materiality, re-derives every figure and subtotal
+   (checks C1-C4) and prints the table. If it stops, report verbatim and STOP.
 2. Write the commentary to the path the script prints (`_work/<period>/step2/commentary.md`):
    one short paragraph per **flagged** line only, in the narrative structure below.
    - Figures verbatim from the script output.

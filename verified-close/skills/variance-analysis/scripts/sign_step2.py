@@ -30,7 +30,7 @@ def main(toml: str, initials: str, note: str = "") -> None:
     if not (w / "variance.json").exists() or not commentary.exists():
         stop("step 2 has not been run with its commentary: nothing to sign")
     run_stage(HERE / "checks.py", w / "tb.json", w / close.file("budget"), close.period, w,
-              label="SIGN-OFF (checks re-run on the files as they stand)")
+              w / "pnl.json", label="SIGN-OFF (checks re-run on the files as they stand)")
 
     signed = f"Variance Report - {close.period} SIGNED {initials}.xlsx"
     shutil.copyfile(report, w / signed)

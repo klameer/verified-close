@@ -77,14 +77,17 @@ def step_details(step: str, rec: dict, var: dict) -> list[str]:
         return out
     if step == "step2":
         out = [f"Lines: {var['line_count']}; flagged at ±{var['flag_threshold_k']:,.0f}k: "
-               f"{var['flagged_count']}; total variance {var['total_variance_k']:+,.1f}k (£'000)",
-               "Checks: C1 lines, C2 every variance re-derived, C3 totals cross-foot, C4 flags"]
+               f"{var['flagged_count']} (thousands; variance = actual - budget; F/A = effect on profit)",
+               "Checks: C1 every line placed once, C2 every variance and F/A re-derived, "
+               "C3 P&L subtotals re-derived, C4 flags"]
+        out += [f"  {t['name']}: actual {t['mtd_actual_k']:,.0f}  bud {t['mtd_budget_k']:,.0f}  "
+                f"var {t['variance_k']:+,.1f} {t['effect']}" for t in var["subtotals"]]
         out += [f"  FLAG {l['line'][:44]}  actual {l['mtd_actual_k']:,.0f}  bud "
-                f"{l['mtd_budget_k']:,.0f}  var {l['variance_k']:+,.1f}"
+                f"{l['mtd_budget_k']:,.0f}  var {l['variance_k']:+,.1f} {l['effect']}"
                 for l in var["lines"] if l["flagged"]]
         return out
     return ["Pack filled from signed step 1 + step 2 outputs only.",
-            "Checks: C1 cash figures to the penny, C2 every variance row verbatim, C3 totals",
+            "Checks: C1 cash figures to the penny, C2 every variance row verbatim, C3 every P&L subtotal",
             "Commentary numbers outside signed sources were listed for reviewer verification."]
 
 

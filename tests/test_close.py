@@ -11,7 +11,7 @@ def sha256(path) -> str:
 
 def test_golden_set_is_green(close):
     out = close.ok("run_goldens.py")
-    assert "golden set: 8/8 green" in out
+    assert "golden set: 9/9 green" in out
 
 
 def test_figures_are_byte_identical_to_the_recorded_run(close):
@@ -22,7 +22,7 @@ def test_figures_are_byte_identical_to_the_recorded_run(close):
     assert sha256(close.work / "step1" / "reconciliation.json") == \
         "44fc053f059d5f0f36be4df54d9a03b9026645837c6473469c569bf23c570dcc"
     assert sha256(close.work / "step2" / "variance.json") == \
-        "9e007c8f0143ba771165547281532b244034e250319cf83ccf256e15d90fccc8"
+        "0babe2ffeeecba13cf063f705dea6726d526e01a9ca01adb7351777ceadb25cd"
 
 
 def test_full_close_end_to_end(close):
@@ -108,7 +108,7 @@ def test_editing_signed_figures_breaks_the_seal(close):
     close.sign_step1()
     close.sign_step2()
     var = close.work / "step2" / "variance.json"
-    var.write_text(var.read_text().replace('"total_variance_k": 545.0', '"total_variance_k": 445.0'))
+    var.write_text(var.read_text().replace('"ebitda_variance_k": 39.0', '"ebitda_variance_k": 49.0'))
     close.write("step3/commentary.txt", "Cash reconciled.\n")
     r = close.run("run_step3.py")
     assert r.returncode == 1 and "SEAL BROKEN" in r.stdout
@@ -138,7 +138,7 @@ def test_materiality_change_keeps_goldens_green(close):
     toml = close.path / "close.toml"
     toml.write_text(toml.read_text(encoding="utf-8").replace("materiality_k = 100", "materiality_k = 50"),
                     encoding="utf-8")
-    assert "8/8 green" in close.ok("run_goldens.py")
+    assert "9/9 green" in close.ok("run_goldens.py")
 
 
 # ---- reset -----------------------------------------------------------------

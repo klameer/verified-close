@@ -31,9 +31,10 @@ def measures(rec: dict, var: dict, cashbook: dict) -> dict:
         "rec_difference": round(rs["derived_book_balance_gbp"] - rs["cashbook_closing_balance_gbp"], 2),
         "closing_items": len(rec["closing_items"]),
         "stale_count": rec["stale_item_count"],
-        "total_variance": var["total_variance_k"],
     }
     out |= {f"variance:{l['line']}": l["variance_k"] for l in var["lines"]}
+    out |= {f"subtotal:{t['name']}": t["variance_k"] for t in var["subtotals"]}
+    out |= {f"actual:{t['name']}": t["mtd_actual_k"] for t in var["subtotals"]}
     return out
 
 
@@ -60,8 +61,11 @@ def main(toml: str) -> None:
     run_stage(REC / "parse_rec.py", prior[-1], g / "opening_rec.json", end, label="GOLDENS")
     run_stage(REC / "reconcile.py", g / "statement.json", g / "cashbook.json", g / "opening_rec.json",
               g / "reconciliation.json", end, close.bank["stale_days"], label="GOLDENS")
+    pnl = close.cfg["pnl"]
+    (g / "pnl.json").write_text(json.dumps(pnl), encoding="utf-8")
     run_stage(VAR / "variance.py", g / "tb.json", budget, close.period,
-              close.variance["materiality_k"], g, close.entity, close.footer(), label="GOLDENS")
+              close.variance["materiality_k"], g, close.entity, close.footer(), g / "pnl.json",
+              label="GOLDENS")
 
     rec = json.load(open(g / "reconciliation.json", encoding="utf-8"))
     var = json.load(open(g / "variance.json", encoding="utf-8"))

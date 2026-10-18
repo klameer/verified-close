@@ -19,8 +19,8 @@ number into the pack yourself.** Run from the close folder (the folder holding `
    source document.
 2. `run_step3.py close.toml` refuses unless steps 1 and 2 are signed and both seals still hold:
    a signed figure edited after sign-off stops the pack. It builds the pack from the template,
-   runs checks C1-C3 (cash figures to the penny, every variance row verbatim, totals) and files
-   the DRAFT. If it stops, report verbatim and STOP. If it lists numbers under REVIEWER MUST
+   runs checks C1-C3 (cash figures to the penny, every variance row verbatim, every P&L subtotal
+   verbatim) and files the DRAFT. If it stops, report verbatim and STOP. If it lists numbers under REVIEWER MUST
    VERIFY, carry that list into the gate: they are commentary numbers the reviewer confirms
    against the cited documents.
 3. Present the slide summary, where each figure came from, and the must-verify list.

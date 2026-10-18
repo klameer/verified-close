@@ -46,7 +46,13 @@ metric = "variance:Cost of goods sold"
 expect = 244.0
 
 [[check]]
-id = "G6b"
-name = "total variance across all lines (thousands)"
-metric = "total_variance"
-expect = 545.0
+id = "G7"
+name = "EBITDA ties to the issued monthly pack (thousands)"
+metric = "actual:EBITDA"
+expect = 388.0
+
+[[check]]
+id = "G8"
+name = "EBITDA variance vs budget, favourable (thousands)"
+metric = "subtotal:EBITDA"
+expect = 39.0

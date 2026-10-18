@@ -40,20 +40,46 @@ def _replace_tokens(prs, mapping: dict):
                             run.text = run.text.replace(token, value)
 
 
-def _add_table(slide, anchor_shape, rows: list[list], col_widths: list[float], bold_rows=()):
+def _add_table(slide, anchor_shape, rows: list[list], col_widths: list[float], bold_rows=(),
+               font_pt: float = 11, row_in: float = 0.3):
     left, top = anchor_shape.left, anchor_shape.top
     anchor_shape._element.getparent().remove(anchor_shape._element)
     table = slide.shapes.add_table(len(rows), len(rows[0]), left, top,
-                                   Inches(sum(col_widths)), Inches(0.3 * len(rows))).table
+                                   Inches(sum(col_widths)), Inches(row_in * len(rows))).table
     for i, w in enumerate(col_widths):
         table.columns[i].width = Inches(w)
     for r, row in enumerate(rows):
+        table.rows[r].height = Inches(row_in)
         for c, val in enumerate(row):
             cell = table.cell(r, c)
             cell.text = "" if val is None else str(val)
+            cell.margin_top = cell.margin_bottom = Inches(0.02)
             for p in cell.text_frame.paragraphs:
-                p.font.size = Pt(11)
+                p.font.size = Pt(font_pt)
                 p.font.bold = r == 0 or r in bold_rows
+
+
+GROUP_SUBTOTALS = [("revenue", ["Total revenue"]), ("cost_of_sales", ["Gross margin"]),
+                   ("operating_expenses", ["Total operating expenses", "EBITDA"]),
+                   ("below_ebitda", ["Net result"])]
+
+
+def _pnl_rows(var: dict) -> tuple[list[list], set]:
+    """The variance table as a P&L: each group's lines, then the subtotals it feeds."""
+    subs = {s["name"]: s for s in var["subtotals"]}
+    rows, bold = [["Line", "Actual", "Budget", "Var", "Var %", "F/A", ""]], set()
+    for group, after in GROUP_SUBTOTALS:
+        for l in (l for l in var["lines"] if l["group"] == group):
+            rows.append([l["line"], f"{l['mtd_actual_k']:,.0f}", f"{l['mtd_budget_k']:,.0f}",
+                         f"{l['variance_k']:+,.1f}",
+                         "" if l["variance_pct"] is None else f"{l['variance_pct']:+.1f}%",
+                         l["effect"], "FLAG" if l["flagged"] else ""])
+        for name in after:
+            t = subs[name]
+            bold.add(len(rows))
+            rows.append([name, f"{t['mtd_actual_k']:,.0f}", f"{t['mtd_budget_k']:,.0f}",
+                         f"{t['variance_k']:+,.1f}", "", t["effect"], ""])
+    return rows, bold
 
 
 def main(template, rec_path, var_path, commentary_path, log_path, period, out_path):
@@ -80,24 +106,17 @@ def main(template, rec_path, var_path, commentary_path, log_path, period, out_pa
     anchor = _fill_text(slides[1], "{{CASH_TABLE}}", "{{CASH_TABLE}}")
     _add_table(slides[1], anchor, cash_rows, [5.5, 2.5], bold_rows={4})
 
-    var_rows = [["Line", "Actual", "Budget", "Var", "Var %", ""]]
-    for l in var["lines"]:
-        var_rows.append([l["line"], f"{l['mtd_actual_k']:,.0f}", f"{l['mtd_budget_k']:,.0f}",
-                         f"{l['variance_k']:+,.1f}",
-                         "" if l["variance_pct"] is None else f"{l['variance_pct']:+.1f}%",
-                         "FLAG" if l["flagged"] else ""])
-    var_rows.append(["TOTAL", f"{var['total_actual_k']:,.0f}", f"{var['total_budget_k']:,.0f}",
-                     f"{var['total_variance_k']:+,.1f}", "", ""])
+    var_rows, bold = _pnl_rows(var)
     anchor = _fill_text(slides[2], "{{VARIANCE_TABLE}}", "{{VARIANCE_TABLE}}")
-    _add_table(slides[2], anchor, var_rows, [4.2, 1.5, 1.5, 1.5, 1.3, 0.9],
-               bold_rows={len(var_rows) - 1})
+    _add_table(slides[2], anchor, var_rows, [4.0, 1.3, 1.3, 1.3, 1.1, 0.7, 0.9],
+               bold_rows=bold, font_pt=10, row_in=0.25)
 
     _fill_text(slides[3], "{{COMMENTARY}}", commentary)
 
     lines = [f"{s['step']}: signed {s['signed_at_utc']} by {s['reviewer']} "
              f"(sha256 {s['result_sha256'][:12]}…)" for s in signoffs]
-    lines.append(f"Units: variance figures in thousands; cash figures in full. "
-                 f"Flag threshold ±{var['flag_threshold_k']:,.0f}k.")
+    lines.append(f"Units: variance figures in thousands; cash figures in full. Variance = actual "
+                 f"- budget; F/A = effect on profit. Flag threshold ±{var['flag_threshold_k']:,.0f}k.")
     _fill_text(slides[4], "{{SIGNOFFS}}", "\n".join(lines))
 
     _replace_tokens(prs, {"{{PERIOD}}": period})
