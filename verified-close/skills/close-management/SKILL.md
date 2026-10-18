@@ -1,14 +1,78 @@
 ---
 name: close-management
-description: Manage the month-end close process with task sequencing, dependencies, and status tracking. Use when planning the close calendar, tracking close progress, identifying blockers, or sequencing close activities by day.
-user-invocable: false
+description: Run the month-end close as a gated checklist (bank reconciliation, variance report, management pack, each computed by script and signed by a named reviewer, then an audit binder), and manage close sequencing, dependencies and status. Use when asked to "run the <period> close", "close out <period>", for close status, to "rerun the golden set" or "reset the close", or when planning the close calendar, tracking close progress or sequencing close activities.
+argument-hint: "run | status | close out | reset <period>"
 ---
 
 # Close Management
 
+> **Modified file** (Apache-2.0 §4(b)). Changed for verified-close, October 2026, from [anthropics/knowledge-work-plugins](https://github.com/anthropics/knowledge-work-plugins) @ `33eeda1`, `finance/skills/close-management/SKILL.md`: added "Verified run: the gated close" and scripts/ (the gated close, close-out, status board, golden set, reset); made the skill user-invocable; description extended. The title, disclaimer and intro above the Verified run, and everything after the horizontal rule, are the upstream text, unchanged.
+
 **Important**: This skill assists with close management workflows but does not provide financial advice. All close activities should be reviewed by qualified financial professionals.
 
 Month-end close checklist, task sequencing and dependencies, status tracking, and common close activities organized by day.
+
+## Verified run: the gated close
+
+The close runs from a **close folder**: the folder holding `close.toml` (entity, period,
+materiality, where every file lives). Run each script from that folder as
+`python <this skill's folder>/scripts/<script> close.toml`. The step scripts live in the
+sibling skills `reconciliation`, `variance-analysis` and `management-pack`. Needs Python 3.11+
+with `openpyxl python-pptx reportlab`: install them once, up front, if missing.
+
+**The gates are enforced by the scripts, not by you.** Each step refuses to run until the step
+before it is signed in the close log, and refuses to use a signed figure whose sha256 has changed
+since sign-off. Never work around a refusal: report it verbatim and stop. A step that has not been
+signed does not release the next step. No exceptions, including when asked to hurry.
+
+### "Run the <period> close"
+
+0. Find `close.toml` in the working folder (ask for the folder if there is none). If its
+   `[period] id` is not the period asked for, stop and say so: the reviewer edits close.toml.
+   Show the status board (`status.py close.toml`) and resume from the first unsigned step. The
+   close log is the only source of run state; working files from an earlier attempt prove nothing.
+1. **Step 1 of 3, bank reconciliation:** follow the `reconciliation` skill, Verified run.
+2. **Step 2 of 3, variance report:** only after step 1 is signed, follow `variance-analysis`,
+   Verified run.
+3. **Step 3 of 3, management pack:** only after step 2 is signed, follow `management-pack`.
+4. Report the close position (three steps signed, outputs filed) and say that "Close out
+   <period>" builds the audit binder.
+
+### "Close out <period>"
+
+`close_out.py close.toml` re-verifies every seal and every filing, builds the binder PDF and files
+it with the close log. Present the binder: one page per step with inputs, key figures, checks
+passed, reviewer decisions, timestamps and hashes. Then say the period is closed out.
+
+### Status
+
+`status.py close.toml [--now "<what is running>"]` prints the board from the close log, never
+from your own claims. Show it verbatim at the start, at every gate, after every sign-off, and
+whenever the reviewer asks where things stand.
+
+### "Rerun the golden set"
+
+After any change to the skills or to close.toml: `run_goldens.py close.toml`. It recomputes
+the known answers in the close folder's golden set from the raw inputs. Report each PASS/FAIL line
+and the n/n summary verbatim. A red golden set means the change is not accepted.
+
+### "Reset the <period> close" (demos and dry runs only)
+
+Only on an explicit request. `reset_close.py close.toml` lists what would go; show the list; on
+the reviewer's yes run `reset_close.py close.toml --yes`. It removes only what a run produced
+(working folder, close log, DRAFT and SIGNED copies, binder). Estate documents are never touched.
+
+### Rules
+
+- Work quietly, report at gates: run tool calls back to back with no narration between them.
+  The status board and the gate messages are the communication.
+- Never run steps in parallel or out of order. Never compute, round or restate a figure
+  yourself: quote the script output.
+- Never write to a ledger or post a journal. The output is files for a reviewer.
+
+---
+
+*The rest of this file is the method from Anthropic's finance plugin, unchanged.*
 
 ## Month-End Close Checklist
 

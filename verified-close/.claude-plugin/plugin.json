@@ -1,0 +1,13 @@
+{
+  "name": "verified-close",
+  "version": "0.1.0",
+  "description": "The month-end close with proof: Anthropic's finance skills plus scripts that compute every figure, reviewer gates the scripts enforce, and a sealed close log that compiles into an audit binder.",
+  "author": {
+    "name": "Karim Lameer",
+    "url": "https://codelessops.com"
+  },
+  "homepage": "https://github.com/klameer/verified-close",
+  "repository": "https://github.com/klameer/verified-close",
+  "license": "Apache-2.0",
+  "keywords": ["finance", "month-end close", "bank reconciliation", "variance analysis", "audit trail", "reviewer gates"]
+}

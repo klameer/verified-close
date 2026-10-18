@@ -1,0 +1,73 @@
+{
+ "repo": "anthropics/knowledge-work-plugins",
+ "commit": "33eeda1e8fd856455b05479d13a0f85b5f803744",
+ "imported": "2026-10-18",
+ "licence": "Apache-2.0",
+ "not_imported": [
+  "finance/.mcp.json (the close needs no connector)",
+  "finance/README.md (replaced by the repository README)",
+  "finance/.claude-plugin/plugin.json (replaced by this plugin's own manifest)"
+ ],
+ "files": [
+  {
+   "upstream": "finance/CONNECTORS.md",
+   "local": "verified-close/CONNECTORS.md",
+   "status": "modified",
+   "upstream_sha256": "af6f4e93e4af385fef0946f685216ba57104f785f35b8b596ea624808213624b"
+  },
+  {
+   "upstream": "finance/LICENSE",
+   "local": "verified-close/LICENSE",
+   "status": "unmodified",
+   "upstream_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+  },
+  {
+   "upstream": "finance/skills/audit-support/SKILL.md",
+   "local": "verified-close/skills/audit-support/SKILL.md",
+   "status": "unmodified",
+   "upstream_sha256": "6e53c9529c42bb92c11d00a58af5119f7383903d9cb3b911625089fec2ff4784"
+  },
+  {
+   "upstream": "finance/skills/close-management/SKILL.md",
+   "local": "verified-close/skills/close-management/SKILL.md",
+   "status": "modified",
+   "upstream_sha256": "6c2df93bcd15eddf65017445fa44f3eb0b16a755711a5e0602d73ca595e73732"
+  },
+  {
+   "upstream": "finance/skills/financial-statements/SKILL.md",
+   "local": "verified-close/skills/financial-statements/SKILL.md",
+   "status": "unmodified",
+   "upstream_sha256": "1a9ba1cc85495eef32fa250b8a4c05e4854430af574a290b855f919dbb557dfc"
+  },
+  {
+   "upstream": "finance/skills/journal-entry/SKILL.md",
+   "local": "verified-close/skills/journal-entry/SKILL.md",
+   "status": "unmodified",
+   "upstream_sha256": "c085de41feb0b8c74771cdd631fff1f668ec253938c69fee47b6a953fc03a266"
+  },
+  {
+   "upstream": "finance/skills/journal-entry-prep/SKILL.md",
+   "local": "verified-close/skills/journal-entry-prep/SKILL.md",
+   "status": "unmodified",
+   "upstream_sha256": "122715fb18246c2f04d31a5f7c07584ecbfc5c0b46ee09b4c0f4557767d7351e"
+  },
+  {
+   "upstream": "finance/skills/reconciliation/SKILL.md",
+   "local": "verified-close/skills/reconciliation/SKILL.md",
+   "status": "modified",
+   "upstream_sha256": "aa17e90539f4d4d84130c910c7f527236bfaa71977c4c03493c8e8e515ddeea6"
+  },
+  {
+   "upstream": "finance/skills/sox-testing/SKILL.md",
+   "local": "verified-close/skills/sox-testing/SKILL.md",
+   "status": "unmodified",
+   "upstream_sha256": "5e5939a070a25d9696b27aaec6c20e64084e6f58637994b2f7ec92744074ea23"
+  },
+  {
+   "upstream": "finance/skills/variance-analysis/SKILL.md",
+   "local": "verified-close/skills/variance-analysis/SKILL.md",
+   "status": "modified",
+   "upstream_sha256": "467db7de3fb118550d013409254e2d4a9f87385a661e154655bf3431919b0ba1"
+  }
+ ]
+}

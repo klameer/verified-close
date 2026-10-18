@@ -1,0 +1,18 @@
+{
+  "name": "verified-close",
+  "owner": {
+    "name": "Karim Lameer",
+    "url": "https://codelessops.com"
+  },
+  "metadata": {
+    "description": "Free finance plugins with proof: script-computed figures, enforced reviewer gates, sealed audit trail."
+  },
+  "plugins": [
+    {
+      "name": "verified-close",
+      "source": "./verified-close",
+      "description": "The month-end close with proof: every figure computed by a script, every step signed by a named reviewer, every signature sealed in an audit binder. Built on Anthropic's finance skills.",
+      "category": "finance"
+    }
+  ]
+}

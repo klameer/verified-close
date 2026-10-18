@@ -1,14 +1,51 @@
 ---
 name: variance-analysis
-description: Decompose financial variances into drivers with narrative explanations and waterfall analysis. Use when analyzing budget vs. actual, period-over-period changes, revenue or expense variances, or preparing variance commentary for leadership.
+description: Decompose financial variances into drivers with narrative explanations and waterfall analysis. Runs the budget-vs-actual variance report as step 2 of the gated close (every variance script-computed and re-derived, commentary cited, signed by a named reviewer). Use when analyzing budget vs. actual, period-over-period changes, revenue or expense variances, or preparing variance commentary for leadership.
 argument-hint: "<line item> <period> vs <comparison>"
 ---
 
 # Variance Analysis
 
+> **Modified file** (Apache-2.0 §4(b)). Changed for verified-close, October 2026, from [anthropics/knowledge-work-plugins](https://github.com/anthropics/knowledge-work-plugins) @ `33eeda1`, `finance/skills/variance-analysis/SKILL.md`: added "Verified run: variance report" and scripts/ (scripted budget-vs-actual, checks, commentary sheet, sign-off); description extended. The title, disclaimer and intro above the Verified run, and everything after the horizontal rule, are the upstream text, unchanged.
+
 **Important**: This skill assists with variance analysis workflows but does not provide financial advice. All analyses should be reviewed by qualified financial professionals before use in reporting.
 
 Techniques for decomposing variances, materiality thresholds, narrative generation, waterfall chart methodology, and budget vs actual vs forecast comparisons.
+
+## Verified run: variance report (step 2 of the close)
+
+**The script computes every variance. Never compute, round or estimate a figure yourself.** Your
+job is the narrative on top of the script's numbers. Run from the close folder as
+`python <this skill's folder>/scripts/<script> close.toml`.
+
+1. `run_step2.py close.toml` refuses until step 1 is signed. It computes actual minus budget per
+   line from the trial balance export and the budget workbook, flags lines at close.toml's
+   materiality, re-derives every figure (checks C1-C4) and prints the table. If it stops, report
+   verbatim and STOP.
+2. Write the commentary to the path the script prints (`_work/<period>/step2/commentary.md`):
+   one short paragraph per **flagged** line only, in the narrative structure below.
+   - Figures verbatim from the script output.
+   - Causes only from documents you can cite. Read the close notes named in close.toml
+     (`[files] close_notes`) first: they say which documents are authoritative and which are
+     superseded.
+   - Nothing you cannot source. Write "driver not evidenced in the documents: <owner> to
+     comment" rather than a guessed cause.
+3. `run_step2.py close.toml` again. It rebuilds the report with your commentary as its own sheet,
+   re-checks and files the DRAFT.
+4. Present the variance table and the commentary, each flagged line citing its source.
+   **GATE. Say exactly this and stop:**
+   > Reviewer sign-off required. The variance report and its commentary are filed as DRAFT.
+   > Reply with your initials to sign off step 2, or raise a query.
+5. Only after sign-off: `sign_step2.py close.toml <initials>`. It re-runs the checks, writes the
+   SIGNED copy and seals the figures, the signed copy and the commentary in the close log. Then
+   hand back to `close-management`, or finish if run alone.
+
+The scripted path covers budget vs actual by line. The price/volume and rate/mix decompositions
+below need volumes the trial balance does not carry: for those this skill is guidance only.
+
+---
+
+*The rest of this file is the method from Anthropic's finance plugin, unchanged.*
 
 ## Variance Decomposition Techniques
 

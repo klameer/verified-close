@@ -1,14 +1,50 @@
 ---
 name: reconciliation
-description: Reconcile accounts by comparing GL balances to subledgers, bank statements, or third-party data. Use when performing bank reconciliations, GL-to-subledger recs, intercompany reconciliations, or identifying and categorizing reconciling items.
+description: Reconcile accounts by comparing GL balances to subledgers, bank statements, or third-party data. Runs the bank reconciliation as step 1 of the gated close (script-computed, checked, signed by a named reviewer). Use when performing bank reconciliations, GL-to-subledger recs, intercompany reconciliations, or identifying and categorizing reconciling items.
 argument-hint: "<account> [period]"
 ---
 
 # Reconciliation
 
+> **Modified file** (Apache-2.0 §4(b)). Changed for verified-close, October 2026, from [anthropics/knowledge-work-plugins](https://github.com/anthropics/knowledge-work-plugins) @ `33eeda1`, `finance/skills/reconciliation/SKILL.md`: added "Verified run: bank reconciliation" and scripts/ (scripted bank rec, checks, sign-off); description extended. The title, disclaimer and intro above the Verified run, and everything after the horizontal rule, are the upstream text, unchanged.
+
 **Important**: This skill assists with reconciliation workflows but does not provide financial advice. All reconciliations should be reviewed by qualified financial professionals before sign-off.
 
 Methodology and best practices for account reconciliation, including GL-to-subledger, bank reconciliations, and intercompany. Covers reconciling item categorization, aging analysis, and escalation.
+
+## Verified run: bank reconciliation (step 1 of the close)
+
+**The scripts do all matching and arithmetic. Never match, total or classify a figure
+yourself.** Every number you show comes from script output. Run from the close folder (the
+folder holding `close.toml`) as `python <this skill's folder>/scripts/<script> close.toml`.
+
+1. `run_step1.py close.toml` copies the bank statement and cashbook exports, takes last month's
+   signed reconciliation as the opening position, then runs parse, reconcile, checks C1-C5
+   (running balance, every line explained, rec identity to the penny, cashbook integrity,
+   conservation) and files a DRAFT workbook in the filing folder. If it stops, report its output
+   verbatim and STOP. Never present results from a run whose checks failed.
+2. Present, from the script output only: the reconciliation statement, and each item under
+   DECISIONS FOR THE REVIEWER as a question. An aged item is the reviewer's call, not yours.
+   Point the reviewer at the DRAFT workbook in the filing folder: they sign a document, not a
+   chat message.
+3. **GATE. Say exactly this and stop:**
+   > The draft reconciliation is filed for review. Nothing is signed until a named reviewer
+   > signs. Reply with your initials and name to sign off step 1, with your decision on each
+   > stale item, or raise a query.
+4. Only after sign-off: `sign_step1.py close.toml <initials> "<name>" "<decision on each stale
+   item>"`. It re-runs the checks on the files as they stand, refuses to sign a stale item
+   without a decision, writes the SIGNED copy (next month's opening position: the close feeds
+   itself), seals it in the close log and confirms the filings. Then hand back to
+   `close-management`, or finish if run alone.
+
+The scripted path applies the method below: the bank reconciliation format, the reconciling item
+categories (timing differences clear on their own; aged items go to investigation) and the aging
+escalation. GL-to-subledger and intercompany reconciliations have no scripted path yet: for those
+this skill is guidance only.
+
+---
+
+*The rest of this file is the method from Anthropic's finance plugin, unchanged.*
 
 ## Reconciliation Types
 
