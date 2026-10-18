@@ -1,6 +1,23 @@
-# Verified Close — SPEC (DRAFT, 2026-10-18)
+# Verified Close — SPEC (signed 2026-10-18)
 
-Status: **draft for Karim's sign-off (PLG-9). No code until the grid and the open questions are signed.**
+Status: **signed by Karim 2026-10-18 ("spec is fine, continue").** §8 answered as recommended,
+except Q4 (see §0).
+
+## 0. Showcase first (Karim, 2026-10-18)
+
+"This is more for display and giving away free stuff than actual usage... the idea is they will see
+it and ask me to implement it in their business." So the repo is written to be read, not
+implemented:
+- **Effort goes to what a reader sees.** That means committed outputs from a real run (signed rec
+  workbook, variance report, pack, close log, audit binder), a diagram of the gated flow, a gate
+  walkthrough, and the scripted-vs-guidance table.
+- **It must still run.** The sample close runs end to end and CI is green, because credibility is
+  the point. But it is built for Caldergate, not for any ledger.
+- **Generalisation is cut to the minimum:** period, materiality and paths in `close.yaml`. There
+  are no column mappings and no second fixture (Q4 reversed).
+- **What is not generalised is the help door.** The README section "Running this on your ledger"
+  lists what an implementation adds (your ERP or exports, chart of accounts, materiality, reviewers,
+  pack template). That is the work Karim is hired for.
 
 ## 1. What it is
 
