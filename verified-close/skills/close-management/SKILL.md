@@ -47,8 +47,9 @@ passed, reviewer decisions, timestamps and hashes. Then say the period is closed
 ### Status
 
 `status.py close.toml [--now "<what is running>"]` prints the board from the close log, never
-from your own claims. Show it verbatim at the start, at every gate, after every sign-off, and
-whenever the reviewer asks where things stand.
+from your own claims. Show it in a code block exactly as printed, never retyped or edited, at
+the start, at every gate, after every sign-off, and whenever the reviewer asks where things
+stand.
 
 ### "Rerun the golden set"
 

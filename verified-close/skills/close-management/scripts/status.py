@@ -2,9 +2,10 @@
 
 Usage: status.py <close.toml> [--now "<what is happening right now>"]
 
-A step counts as done solely when its signed record is in the log. The
-optional --now line labels what the run is doing this moment; everything
-else is derived. No log = the close has not started. Always exits 0.
+A step counts as done solely when its signed record is in the log; [~] means
+its DRAFT is filed and waiting for the reviewer. The optional --now line
+labels what the run is doing this moment; everything else is derived. No
+log = the close has not started. Always exits 0.
 """
 import sys
 
@@ -26,7 +27,9 @@ def main(argv: list[str]) -> None:
             when = r["signed_at_utc"][:16].replace("T", " ")
             print(f"[x] {label:<28} signed {r['reviewer']} {when}Z  sha256 {r['result_sha256'][:12]}")
         elif not next_seen:
-            print(f"[ ] {label:<28} <- next")
+            drafted = (close.folder("filing") / close.draft_name(step)).exists()
+            print(f"[~] {label:<28} DRAFT filed, awaiting reviewer sign-off" if drafted
+                  else f"[ ] {label:<28} <- next")
             next_seen = True
         else:
             print(f"[ ] {label:<28} blocked (needs {STEP_TITLES[steps[i - 1]].split('  ')[0]} signed)")

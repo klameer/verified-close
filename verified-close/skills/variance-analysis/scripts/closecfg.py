@@ -90,6 +90,11 @@ class Close:
         return f"{self.entity} - Confidential." + (
             " Fictitious data (demo estate)." if self.fictional else "")
 
+    def draft_name(self, step: str) -> str:
+        return {"step1": f"Bank Reconciliation - {self.bank['account']} - {self.period} DRAFT.xlsx",
+                "step2": f"Variance Report - {self.period} DRAFT.xlsx",
+                "step3": f"Management Pack - {self.period} DRAFT.pptx"}[step]
+
     def file_into(self, src: Path, name: str | None = None) -> Path:
         """Copy an output into the filing folder (the reviewer's surface)."""
         dst_dir = self.folder("filing")

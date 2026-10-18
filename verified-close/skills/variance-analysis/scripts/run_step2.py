@@ -53,7 +53,7 @@ def main(toml: str) -> None:
         print(f"\nNEXT: write the commentary for the {var['flagged_count']} flagged line(s) to "
               f"{rel}, then run this again to file the DRAFT.")
         return
-    draft = f"Variance Report - {close.period} DRAFT.xlsx"
+    draft = close.draft_name("step2")
     shutil.copyfile(w / f"Variance Report - {close.period}.xlsx", w / draft)
     close.file_into(w / draft)
     close.confirm_filed([draft])

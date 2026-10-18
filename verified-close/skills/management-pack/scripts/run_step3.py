@@ -36,7 +36,7 @@ def main(toml: str) -> None:
     run_stage(HERE / "build_pack.py", template, rec, var, commentary, close.log_path,
               close.period, pack, label="STEP 3")
     run_stage(HERE / "checks.py", pack, rec, var, commentary, label="STEP 3")
-    draft = f"Management Pack - {close.period} DRAFT.pptx"
+    draft = close.draft_name("step3")
     shutil.copyfile(pack, w / draft)
     close.file_into(w / draft)
     close.confirm_filed([draft])

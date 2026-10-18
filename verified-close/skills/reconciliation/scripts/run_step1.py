@@ -63,7 +63,7 @@ def main(toml: str) -> None:
         w / "reconciliation.json", close.period_end.isoformat(), close.bank["stale_days"])
     run("checks.py", w / "statement.json", w / "cashbook.json", w / "opening_rec.json",
         w / "reconciliation.json")
-    draft = f"Bank Reconciliation - {close.bank['account']} - {close.period} DRAFT.xlsx"
+    draft = close.draft_name("step1")
     run("write_rec.py", w / "reconciliation.json", close.period_label, "DRAFT - pending sign-off",
         w / draft, close.entity, close.bank["account"], close.bank["line"], close.footer())
     close.file_into(w / draft)
