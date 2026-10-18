@@ -1,0 +1,353 @@
+{
+ "system": "Caldergate ERP (mock)",
+ "dataset": "bank_statement",
+ "period": "May-26",
+ "account": {
+  "account_id": "main",
+  "name": "Caldergate Distribution Group Ltd \u2014 Operating Account",
+  "bank": "Pennine Commercial Bank plc",
+  "sort_code": "99-42-07",
+  "account_no": "00341275",
+  "currency": "GBP"
+ },
+ "currency": "GBP",
+ "row_count": 48,
+ "rows": [
+  {
+   "date": "2026-05-01",
+   "description": "CARD SETTLEMENT BATCH 3004",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "71286.40",
+   "balance_gbp": "11328953.93"
+  },
+  {
+   "date": "2026-05-01",
+   "description": "BACS CREDIT REF 374204 MANUFACTURER",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "138442.19",
+   "balance_gbp": "11467396.12"
+  },
+  {
+   "date": "2026-05-01",
+   "description": "BACS CREDIT REF 368458 MANUFACTURER",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "1472843.06",
+   "balance_gbp": "12940239.18"
+  },
+  {
+   "date": "2026-05-01",
+   "description": "BACS PAYMENT RUN 0429",
+   "paid_out_gbp": "1412304.55",
+   "paid_in_gbp": "",
+   "balance_gbp": "11527934.63"
+  },
+  {
+   "date": "2026-05-05",
+   "description": "CARD SETTLEMENT BATCH 0105",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "77518.05",
+   "balance_gbp": "11605452.68"
+  },
+  {
+   "date": "2026-05-05",
+   "description": "BACS CREDIT REF 866454 FM COMPANY",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "809331.18",
+   "balance_gbp": "12414783.86"
+  },
+  {
+   "date": "2026-05-06",
+   "description": "CARD SETTLEMENT BATCH 0505",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "25030.86",
+   "balance_gbp": "12439814.72"
+  },
+  {
+   "date": "2026-05-06",
+   "description": "BACS CREDIT REF 981389 FM COMPANY",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "1375145.08",
+   "balance_gbp": "13814959.80"
+  },
+  {
+   "date": "2026-05-07",
+   "description": "CARD SETTLEMENT BATCH 0605",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "72376.05",
+   "balance_gbp": "13887335.85"
+  },
+  {
+   "date": "2026-05-07",
+   "description": "BACS CREDIT REF 298067 PUBLIC FRAMEWORK",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "1114436.05",
+   "balance_gbp": "15001771.90"
+  },
+  {
+   "date": "2026-05-08",
+   "description": "CARD SETTLEMENT BATCH 0705",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "71134.21",
+   "balance_gbp": "15072906.11"
+  },
+  {
+   "date": "2026-05-08",
+   "description": "BACS CREDIT REF 197221 SME TRADE",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "743241.95",
+   "balance_gbp": "15816148.06"
+  },
+  {
+   "date": "2026-05-11",
+   "description": "CARD SETTLEMENT BATCH 0805",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "30968.41",
+   "balance_gbp": "15847116.47"
+  },
+  {
+   "date": "2026-05-11",
+   "description": "BACS CREDIT REF 532595 MANUFACTURER",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "1008743.72",
+   "balance_gbp": "16855860.19"
+  },
+  {
+   "date": "2026-05-11",
+   "description": "BACS PAYMENT RUN 0507",
+   "paid_out_gbp": "5612847.33",
+   "paid_in_gbp": "",
+   "balance_gbp": "11243012.86"
+  },
+  {
+   "date": "2026-05-12",
+   "description": "CARD SETTLEMENT BATCH 1105",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "75926.94",
+   "balance_gbp": "11318939.80"
+  },
+  {
+   "date": "2026-05-12",
+   "description": "BACS CREDIT REF 995693 NHS TRUST",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "1399108.73",
+   "balance_gbp": "12718048.53"
+  },
+  {
+   "date": "2026-05-13",
+   "description": "CARD SETTLEMENT BATCH 1205",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "73637.30",
+   "balance_gbp": "12791685.83"
+  },
+  {
+   "date": "2026-05-13",
+   "description": "BACS CREDIT REF 528959 MANUFACTURER",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "1391483.05",
+   "balance_gbp": "14183168.88"
+  },
+  {
+   "date": "2026-05-14",
+   "description": "CARD SETTLEMENT BATCH 1305",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "57978.46",
+   "balance_gbp": "14241147.34"
+  },
+  {
+   "date": "2026-05-14",
+   "description": "BACS CREDIT REF 481829 PUBLIC FRAMEWORK",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "843831.09",
+   "balance_gbp": "15084978.43"
+  },
+  {
+   "date": "2026-05-15",
+   "description": "CARD SETTLEMENT BATCH 1405",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "35159.62",
+   "balance_gbp": "15120138.05"
+  },
+  {
+   "date": "2026-05-15",
+   "description": "BACS CREDIT REF 193113 FM COMPANY",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "839018.95",
+   "balance_gbp": "15959157.00"
+  },
+  {
+   "date": "2026-05-15",
+   "description": "DD THORNBURY RIDGE CAPITAL TERM LOAN",
+   "paid_out_gbp": "632000.00",
+   "paid_in_gbp": "",
+   "balance_gbp": "15327157.00"
+  },
+  {
+   "date": "2026-05-18",
+   "description": "CARD SETTLEMENT BATCH 1505",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "53554.40",
+   "balance_gbp": "15380711.40"
+  },
+  {
+   "date": "2026-05-18",
+   "description": "BACS CREDIT REF 208362 MANUFACTURER",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "682042.46",
+   "balance_gbp": "16062753.86"
+  },
+  {
+   "date": "2026-05-18",
+   "description": "BACS PAYMENT RUN 0514",
+   "paid_out_gbp": "5918232.19",
+   "paid_in_gbp": "",
+   "balance_gbp": "10144521.67"
+  },
+  {
+   "date": "2026-05-19",
+   "description": "CARD SETTLEMENT BATCH 1805",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "35896.97",
+   "balance_gbp": "10180418.64"
+  },
+  {
+   "date": "2026-05-19",
+   "description": "BACS CREDIT REF 231641 SME TRADE",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "1510408.75",
+   "balance_gbp": "11690827.39"
+  },
+  {
+   "date": "2026-05-19",
+   "description": "FP FORKSERV EQUIPMENT HIRE",
+   "paid_out_gbp": "310247.80",
+   "paid_in_gbp": "",
+   "balance_gbp": "11380579.59"
+  },
+  {
+   "date": "2026-05-20",
+   "description": "CARD SETTLEMENT BATCH 1905",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "113686.68",
+   "balance_gbp": "11494266.27"
+  },
+  {
+   "date": "2026-05-20",
+   "description": "BACS CREDIT REF 562203 PUBLIC FRAMEWORK",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "618320.49",
+   "balance_gbp": "12112586.76"
+  },
+  {
+   "date": "2026-05-21",
+   "description": "CARD SETTLEMENT BATCH 2005",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "39467.26",
+   "balance_gbp": "12152054.02"
+  },
+  {
+   "date": "2026-05-21",
+   "description": "BACS CREDIT REF 251059 FM COMPANY",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "1504762.25",
+   "balance_gbp": "13656816.27"
+  },
+  {
+   "date": "2026-05-22",
+   "description": "CARD SETTLEMENT BATCH 2105",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "96048.65",
+   "balance_gbp": "13752864.92"
+  },
+  {
+   "date": "2026-05-22",
+   "description": "BACS CREDIT REF 839275 PUBLIC FRAMEWORK",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "730842.94",
+   "balance_gbp": "14483707.86"
+  },
+  {
+   "date": "2026-05-22",
+   "description": "HMRC PAYE NI",
+   "paid_out_gbp": "1770384.00",
+   "paid_in_gbp": "",
+   "balance_gbp": "12713323.86"
+  },
+  {
+   "date": "2026-05-26",
+   "description": "CARD SETTLEMENT BATCH 2205",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "55009.68",
+   "balance_gbp": "12768333.54"
+  },
+  {
+   "date": "2026-05-26",
+   "description": "BACS CREDIT REF 118888 NHS TRUST",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "1340121.28",
+   "balance_gbp": "14108454.82"
+  },
+  {
+   "date": "2026-05-26",
+   "description": "BACS PAYMENT RUN 0521",
+   "paid_out_gbp": "4769114.58",
+   "paid_in_gbp": "",
+   "balance_gbp": "9339340.24"
+  },
+  {
+   "date": "2026-05-27",
+   "description": "CARD SETTLEMENT BATCH 2605",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "70532.69",
+   "balance_gbp": "9409872.93"
+  },
+  {
+   "date": "2026-05-27",
+   "description": "BACS CREDIT REF 433825 MANUFACTURER",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "1203712.78",
+   "balance_gbp": "10613585.71"
+  },
+  {
+   "date": "2026-05-27",
+   "description": "FP NORTHGATE SYSTEMS",
+   "paid_out_gbp": "146684.10",
+   "paid_in_gbp": "",
+   "balance_gbp": "10466901.61"
+  },
+  {
+   "date": "2026-05-28",
+   "description": "CARD SETTLEMENT BATCH 2705",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "63353.30",
+   "balance_gbp": "10530254.91"
+  },
+  {
+   "date": "2026-05-28",
+   "description": "BACS CREDIT REF 834172 PUBLIC FRAMEWORK",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "1371458.47",
+   "balance_gbp": "11901713.38"
+  },
+  {
+   "date": "2026-05-28",
+   "description": "SALARIES BACS",
+   "paid_out_gbp": "2089440.00",
+   "paid_in_gbp": "",
+   "balance_gbp": "9812273.38"
+  },
+  {
+   "date": "2026-05-29",
+   "description": "CARD SETTLEMENT BATCH 2805",
+   "paid_out_gbp": "",
+   "paid_in_gbp": "72182.02",
+   "balance_gbp": "9884455.40"
+  },
+  {
+   "date": "2026-05-29",
+   "description": "ACCOUNT CHARGES",
+   "paid_out_gbp": "1842.17",
+   "paid_in_gbp": "",
+   "balance_gbp": "9882613.23"
+  }
+ ]
+}
