@@ -29,7 +29,7 @@ script call and its output are folded under the step that ran it. Five moments t
 5. **Close-out re-hashes every signed file before it builds the binder.** If a signed workbook
    had been edited after sign-off, the close would stop there.
 
-Claude's part of the close took 88 seconds across the five turns. The rest is the reviewer
+Claude's part of the close took 98 seconds across the five turns. The rest is the reviewer
 reading three documents.
 
 The files the run filed are in [`showcase/may-26/filed/`](showcase/may-26/filed): the signed
@@ -86,7 +86,7 @@ gates. Five are Anthropic's method text, shipped unchanged and labelled as guida
 |---|---|---|
 | `close-management` | Runs the gated close end to end: status board, close-out, golden set, reset. Anthropic's close checklist and calendar sit underneath. | **scripted + gated** (merged) |
 | `reconciliation` | Step 1: the bank reconciliation, script-matched and checked, with last month's signed rec as the opening position | **scripted + gated** for bank; guidance for GL and intercompany (merged) |
-| `variance-analysis` | Step 2: budget vs actual by line, flagged at your materiality, with commentary that cites a document or names an owner | **scripted + gated** (merged) |
+| `variance-analysis` | Step 2: budget vs actual laid out as a P&L (revenue, gross margin, operating expenses, EBITDA, net result), each row marked favourable or adverse, flagged at your materiality, with commentary that cites a document or names an owner | **scripted + gated** (merged) |
 | `management-pack` | Step 3: fills the pack template from signed figures only, and lists any commentary number it cannot trace | **scripted + gated** (new) |
 | `financial-statements` | Income statement, balance sheet and cash flow formats with flux analysis | guidance only |
 | `journal-entry` | Preparing journal entries with a review checklist | guidance only |
@@ -103,9 +103,9 @@ an unchanged file drifts or a changed file loses its notice.
 `python -m pytest` runs on every push ([CI](.github/workflows/ci.yml)), alongside
 `claude plugin validate` and a secret scan.
 
-- **The golden set.** Eight known answers for the Caldergate close are recomputed from the raw
+- **The golden set.** Nine known answers for the Caldergate close are recomputed from the raw
   exports: statement close, cashbook close, the rec to the penny, six closing items, the one
-  stale cheque, and three variances. Changing materiality keeps them green, and breaking the
+  stale cheque, two line variances, EBITDA tying to the issued monthly pack, and its variance. Changing materiality keeps them green, and breaking the
   arithmetic turns them red.
 - **Every refusal.** Each step refuses to run before its predecessor is signed. A stale item
   cannot be signed without a decision. A signed step never re-runs. The pack needs its

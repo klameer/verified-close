@@ -1,109 +1,170 @@
 {
- "report": "MTD variance vs budget",
+ "report": "MTD variance vs budget, as a P&L",
  "period": "May-26",
  "units": "GBP thousands",
  "flag_threshold_k": 100.0,
  "line_count": 12,
  "flagged_count": 3,
- "total_actual_k": 42234.0,
- "total_budget_k": 41689.0,
- "total_variance_k": 545.0,
+ "ebitda_actual_k": 388.0,
+ "ebitda_variance_k": 39.0,
+ "net_result_variance_k": 75.0,
  "lines": [
   {
    "line": "Facilities & Safety Supplies",
+   "group": "revenue",
    "mtd_actual_k": 8343.0,
    "mtd_budget_k": 8216.0,
    "variance_k": 127.0,
    "variance_pct": 1.5,
+   "effect": "F",
    "flagged": true
   },
   {
    "line": "Industrial Consumables & Packaging",
+   "group": "revenue",
    "mtd_actual_k": 8464.0,
    "mtd_budget_k": 8361.0,
    "variance_k": 103.0,
    "variance_pct": 1.2,
+   "effect": "F",
    "flagged": true
   },
   {
    "line": "Office & Print Solutions",
+   "group": "revenue",
    "mtd_actual_k": 4256.0,
    "mtd_budget_k": 4176.0,
    "variance_k": 80.0,
    "variance_pct": 1.9,
+   "effect": "F",
    "flagged": false
   },
   {
    "line": "Cost of goods sold",
+   "group": "cost_of_sales",
    "mtd_actual_k": 15843.0,
    "mtd_budget_k": 15599.0,
    "variance_k": 244.0,
    "variance_pct": 1.6,
+   "effect": "A",
    "flagged": true
   },
   {
    "line": "Warehouse & Logistics",
+   "group": "operating_expenses",
    "mtd_actual_k": 1661.0,
    "mtd_budget_k": 1663.0,
    "variance_k": -2.0,
    "variance_pct": -0.1,
+   "effect": "F",
    "flagged": false
   },
   {
    "line": "Sales & Account Management",
+   "group": "operating_expenses",
    "mtd_actual_k": 1257.0,
    "mtd_budget_k": 1230.0,
    "variance_k": 27.0,
    "variance_pct": 2.2,
+   "effect": "A",
    "flagged": false
   },
   {
    "line": "Procurement & Merchandising",
+   "group": "operating_expenses",
    "mtd_actual_k": 597.0,
    "mtd_budget_k": 586.0,
    "variance_k": 11.0,
    "variance_pct": 1.9,
+   "effect": "A",
    "flagged": false
   },
   {
    "line": "IT & Digital",
+   "group": "operating_expenses",
    "mtd_actual_k": 521.0,
    "mtd_budget_k": 519.0,
    "variance_k": 2.0,
    "variance_pct": 0.4,
+   "effect": "A",
    "flagged": false
   },
   {
    "line": "General & Administrative",
+   "group": "operating_expenses",
    "mtd_actual_k": 796.0,
    "mtd_budget_k": 807.0,
    "variance_k": -11.0,
    "variance_pct": -1.4,
+   "effect": "F",
    "flagged": false
   },
   {
    "line": "Depreciation & amortisation",
+   "group": "below_ebitda",
    "mtd_actual_k": 400.0,
    "mtd_budget_k": 400.0,
    "variance_k": 0.0,
    "variance_pct": 0.0,
+   "effect": "",
    "flagged": false
   },
   {
    "line": "Interest expense, net",
+   "group": "below_ebitda",
    "mtd_actual_k": 132.0,
    "mtd_budget_k": 132.0,
    "variance_k": 0.0,
    "variance_pct": 0.0,
+   "effect": "",
    "flagged": false
   },
   {
    "line": "Taxation",
+   "group": "below_ebitda",
    "mtd_actual_k": -36.0,
    "mtd_budget_k": 0.0,
    "variance_k": -36.0,
    "variance_pct": null,
+   "effect": "F",
    "flagged": false
+  }
+ ],
+ "subtotals": [
+  {
+   "name": "Total revenue",
+   "mtd_actual_k": 21063.0,
+   "mtd_budget_k": 20753.0,
+   "variance_k": 310.0,
+   "effect": "F"
+  },
+  {
+   "name": "Gross margin",
+   "mtd_actual_k": 5220.0,
+   "mtd_budget_k": 5154.0,
+   "variance_k": 66.0,
+   "effect": "F"
+  },
+  {
+   "name": "Total operating expenses",
+   "mtd_actual_k": 4832.0,
+   "mtd_budget_k": 4805.0,
+   "variance_k": 27.0,
+   "effect": "A"
+  },
+  {
+   "name": "EBITDA",
+   "mtd_actual_k": 388.0,
+   "mtd_budget_k": 349.0,
+   "variance_k": 39.0,
+   "effect": "F"
+  },
+  {
+   "name": "Net result",
+   "mtd_actual_k": -108.0,
+   "mtd_budget_k": -183.0,
+   "variance_k": 75.0,
+   "effect": "F"
   }
  ]
 }
