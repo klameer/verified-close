@@ -34,12 +34,26 @@ class Page:
 
     def line(self, text, size=10, indent=0, bold=False, grey=False):
         self.c.setFillColorRGB(*(GREY if grey else (0, 0, 0)))
-        self.c.setFont("Helvetica-Bold" if bold else "Helvetica", size)
-        self.c.drawString(MARGIN + indent, self.y, text[:110])
+        font = "Helvetica-Bold" if bold else "Helvetica"
+        self.c.setFont(font, size)
+        width = A4[0] - 2 * MARGIN - indent
+        words, row = text.split(" "), ""
+        for word in words:  # wrap, never truncate: a decision is printed in full
+            if row and self.c.stringWidth(f"{row} {word}", font, size) > width:
+                self.c.drawString(MARGIN + indent, self.y, row)
+                self.y -= size + 4
+                row = word
+            else:
+                row = f"{row} {word}" if row else word
+        self.c.drawString(MARGIN + indent, self.y, row)
         self.y -= size + 4
 
     def gap(self, h=8):
         self.y -= h
+
+
+def _money(v: float) -> str:
+    return f"-£{-v:,.2f}" if v < 0 else f"£{v:,.2f}"
 
 
 STEP_TITLES = {"step1": "Step 1 — Bank reconciliation",
@@ -59,7 +73,7 @@ def step_details(step: str, rec: dict, var: dict) -> list[str]:
                "C4 cashbook integrity, C5 conservation"]
         for i in rec["closing_items"]:
             flag = "  [STALE]" if i["stale"] else ""
-            out.append(f"  item: {i['description'][:60]}  £{i['amount_gbp']:,.2f}{flag}")
+            out.append(f"  item: {i['description']}  {_money(i['amount_gbp'])}{flag}")
         return out
     if step == "step2":
         out = [f"Lines: {var['line_count']}; flagged at ±{var['flag_threshold_k']:,.0f}k: "

@@ -24,9 +24,9 @@ def main(statement_path: str, cashbook_path: str, opening_path: str, out_path: s
          period_end: str, stale_days: str) -> None:
     end = date.fromisoformat(period_end)
     stale_after = int(stale_days)
-    stmt = json.load(open(statement_path))
-    cb = json.load(open(cashbook_path))
-    opening = json.load(open(opening_path))
+    stmt = json.load(open(statement_path, encoding="utf-8"))
+    cb = json.load(open(cashbook_path, encoding="utf-8"))
+    opening = json.load(open(opening_path, encoding="utf-8"))
 
     stmt_lines = [{"idx": i, "date": r["date"], "description": r["description"], "net": _net(r)}
                   for i, r in enumerate(stmt["rows"])]
@@ -106,7 +106,7 @@ def main(statement_path: str, cashbook_path: str, opening_path: str, out_path: s
         "stale_item_count": sum(1 for i in closing_items if i["stale"]),
         "matches": matches,
     }
-    json.dump(result, open(out_path, "w"), indent=1)
+    json.dump(result, open(out_path, "w", encoding="utf-8", newline="\n"), indent=1)
     rs = result["reconciliation_statement"]
     agreed = abs(rs["derived_book_balance_gbp"] - rs["cashbook_closing_balance_gbp"]) < 0.01
     print(f"{result['matched']}/{result['statement_lines']} statement lines explained; "

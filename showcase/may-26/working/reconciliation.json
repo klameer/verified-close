@@ -1,0 +1,514 @@
+{
+ "reconciliation": "bank statement vs cashbook (Operating Account)",
+ "period": "May-26",
+ "statement_lines": 48,
+ "matched": 48,
+ "unmatched_statement_lines": [],
+ "statement_close_gbp": 9882613.23,
+ "closing_items": [
+  {
+   "description": "Expense claims batch",
+   "book_date": "2026-05-28",
+   "expected_clearing": "2026-06-01",
+   "amount_gbp": -23412.77,
+   "source": "cashbook",
+   "kind": "unpresented_payment",
+   "stale": false,
+   "reading": "Booked in the period; hits the bank after period end. Timing difference."
+  },
+  {
+   "description": "Supplier payment run (month-end; incl. Ridgway Freight \u2014 April invoices)",
+   "book_date": "2026-05-28",
+   "expected_clearing": "2026-06-01",
+   "amount_gbp": -1191437.29,
+   "source": "cashbook",
+   "kind": "unpresented_payment",
+   "stale": false,
+   "reading": "Booked in the period; hits the bank after period end. Timing difference."
+  },
+  {
+   "description": "Card settlement \u2014 trade counter & online",
+   "book_date": "2026-05-29",
+   "expected_clearing": "2026-06-01",
+   "amount_gbp": 55020.1,
+   "source": "cashbook",
+   "kind": "uncleared_lodgement",
+   "stale": false,
+   "reading": "Booked in the period; hits the bank after period end. Timing difference."
+  },
+  {
+   "description": "Customer remittances (in transit)",
+   "book_date": "2026-05-29",
+   "expected_clearing": "2026-06-01",
+   "amount_gbp": 161309.55,
+   "source": "cashbook",
+   "kind": "uncleared_lodgement",
+   "stale": false,
+   "reading": "Booked in the period; hits the bank after period end. Timing difference."
+  },
+  {
+   "description": "Card settlement \u2014 online orders (weekend)",
+   "book_date": "2026-05-31",
+   "expected_clearing": "2026-06-02",
+   "amount_gbp": 29146.1,
+   "source": "cashbook",
+   "kind": "uncleared_lodgement",
+   "stale": false,
+   "reading": "Booked in the period; hits the bank after period end. Timing difference."
+  },
+  {
+   "description": "Cheque 004182 \u2014 Airedale Window Cleaning (14 Apr)",
+   "book_date": "2026-04-14",
+   "expected_clearing": "OPEN",
+   "amount_gbp": -1850.0,
+   "source": "opening_rec",
+   "kind": "unpresented_payment",
+   "stale": true,
+   "age_days": 47,
+   "reading": "Carried forward from last month's rec and STILL not cleared.",
+   "reviewer_question": "Outstanding 47 days. Stop and reissue, write back, or carry forward?"
+  }
+ ],
+ "reconciliation_statement": {
+  "balance_per_bank_gbp": 9882613.23,
+  "less_unpresented_payments_gbp": 1216700.06,
+  "add_uncleared_lodgements_gbp": 245475.75,
+  "derived_book_balance_gbp": 8911388.92,
+  "cashbook_closing_balance_gbp": 8911388.92
+ },
+ "stale_item_count": 1,
+ "matches": [
+  {
+   "statement": {
+    "idx": 0,
+    "date": "2026-05-01",
+    "description": "CARD SETTLEMENT BATCH 3004",
+    "net": 71286.4
+   },
+   "opening_item": "Card settlements (30 Apr\u201330 Apr trading)"
+  },
+  {
+   "statement": {
+    "idx": 1,
+    "date": "2026-05-01",
+    "description": "BACS CREDIT REF 374204 MANUFACTURER",
+    "net": 138442.19
+   },
+   "opening_item": "Customer remittances in transit (30 Apr)"
+  },
+  {
+   "statement": {
+    "idx": 2,
+    "date": "2026-05-01",
+    "description": "BACS CREDIT REF 368458 MANUFACTURER",
+    "net": 1472843.06
+   },
+   "cashbook_ref": "REM-0501"
+  },
+  {
+   "statement": {
+    "idx": 3,
+    "date": "2026-05-01",
+    "description": "BACS PAYMENT RUN 0429",
+    "net": -1412304.55
+   },
+   "opening_item": "Supplier payment run (month-end) (29 Apr)"
+  },
+  {
+   "statement": {
+    "idx": 4,
+    "date": "2026-05-05",
+    "description": "CARD SETTLEMENT BATCH 0105",
+    "net": 77518.05
+   },
+   "cashbook_ref": "CRD-0501"
+  },
+  {
+   "statement": {
+    "idx": 5,
+    "date": "2026-05-05",
+    "description": "BACS CREDIT REF 866454 FM COMPANY",
+    "net": 809331.18
+   },
+   "cashbook_ref": "REM-0505"
+  },
+  {
+   "statement": {
+    "idx": 6,
+    "date": "2026-05-06",
+    "description": "CARD SETTLEMENT BATCH 0505",
+    "net": 25030.86
+   },
+   "cashbook_ref": "CRD-0505"
+  },
+  {
+   "statement": {
+    "idx": 7,
+    "date": "2026-05-06",
+    "description": "BACS CREDIT REF 981389 FM COMPANY",
+    "net": 1375145.08
+   },
+   "cashbook_ref": "REM-0506"
+  },
+  {
+   "statement": {
+    "idx": 8,
+    "date": "2026-05-07",
+    "description": "CARD SETTLEMENT BATCH 0605",
+    "net": 72376.05
+   },
+   "cashbook_ref": "CRD-0506"
+  },
+  {
+   "statement": {
+    "idx": 9,
+    "date": "2026-05-07",
+    "description": "BACS CREDIT REF 298067 PUBLIC FRAMEWORK",
+    "net": 1114436.05
+   },
+   "cashbook_ref": "REM-0507"
+  },
+  {
+   "statement": {
+    "idx": 10,
+    "date": "2026-05-08",
+    "description": "CARD SETTLEMENT BATCH 0705",
+    "net": 71134.21
+   },
+   "cashbook_ref": "CRD-0507"
+  },
+  {
+   "statement": {
+    "idx": 11,
+    "date": "2026-05-08",
+    "description": "BACS CREDIT REF 197221 SME TRADE",
+    "net": 743241.95
+   },
+   "cashbook_ref": "REM-0508"
+  },
+  {
+   "statement": {
+    "idx": 12,
+    "date": "2026-05-11",
+    "description": "CARD SETTLEMENT BATCH 0805",
+    "net": 30968.41
+   },
+   "cashbook_ref": "CRD-0508"
+  },
+  {
+   "statement": {
+    "idx": 13,
+    "date": "2026-05-11",
+    "description": "BACS CREDIT REF 532595 MANUFACTURER",
+    "net": 1008743.72
+   },
+   "cashbook_ref": "REM-0511"
+  },
+  {
+   "statement": {
+    "idx": 14,
+    "date": "2026-05-11",
+    "description": "BACS PAYMENT RUN 0507",
+    "net": -5612847.33
+   },
+   "cashbook_ref": "RUN-0507"
+  },
+  {
+   "statement": {
+    "idx": 15,
+    "date": "2026-05-12",
+    "description": "CARD SETTLEMENT BATCH 1105",
+    "net": 75926.94
+   },
+   "cashbook_ref": "CRD-0511"
+  },
+  {
+   "statement": {
+    "idx": 16,
+    "date": "2026-05-12",
+    "description": "BACS CREDIT REF 995693 NHS TRUST",
+    "net": 1399108.73
+   },
+   "cashbook_ref": "REM-0512"
+  },
+  {
+   "statement": {
+    "idx": 17,
+    "date": "2026-05-13",
+    "description": "CARD SETTLEMENT BATCH 1205",
+    "net": 73637.3
+   },
+   "cashbook_ref": "CRD-0512"
+  },
+  {
+   "statement": {
+    "idx": 18,
+    "date": "2026-05-13",
+    "description": "BACS CREDIT REF 528959 MANUFACTURER",
+    "net": 1391483.05
+   },
+   "cashbook_ref": "REM-0513"
+  },
+  {
+   "statement": {
+    "idx": 19,
+    "date": "2026-05-14",
+    "description": "CARD SETTLEMENT BATCH 1305",
+    "net": 57978.46
+   },
+   "cashbook_ref": "CRD-0513"
+  },
+  {
+   "statement": {
+    "idx": 20,
+    "date": "2026-05-14",
+    "description": "BACS CREDIT REF 481829 PUBLIC FRAMEWORK",
+    "net": 843831.09
+   },
+   "cashbook_ref": "REM-0514"
+  },
+  {
+   "statement": {
+    "idx": 21,
+    "date": "2026-05-15",
+    "description": "CARD SETTLEMENT BATCH 1405",
+    "net": 35159.62
+   },
+   "cashbook_ref": "CRD-0514"
+  },
+  {
+   "statement": {
+    "idx": 22,
+    "date": "2026-05-15",
+    "description": "BACS CREDIT REF 193113 FM COMPANY",
+    "net": 839018.95
+   },
+   "cashbook_ref": "REM-0515"
+  },
+  {
+   "statement": {
+    "idx": 23,
+    "date": "2026-05-15",
+    "description": "DD THORNBURY RIDGE CAPITAL TERM LOAN",
+    "net": -632000.0
+   },
+   "cashbook_ref": "LOAN-0515"
+  },
+  {
+   "statement": {
+    "idx": 24,
+    "date": "2026-05-18",
+    "description": "CARD SETTLEMENT BATCH 1505",
+    "net": 53554.4
+   },
+   "cashbook_ref": "CRD-0515"
+  },
+  {
+   "statement": {
+    "idx": 25,
+    "date": "2026-05-18",
+    "description": "BACS CREDIT REF 208362 MANUFACTURER",
+    "net": 682042.46
+   },
+   "cashbook_ref": "REM-0518"
+  },
+  {
+   "statement": {
+    "idx": 26,
+    "date": "2026-05-18",
+    "description": "BACS PAYMENT RUN 0514",
+    "net": -5918232.19
+   },
+   "cashbook_ref": "RUN-0514"
+  },
+  {
+   "statement": {
+    "idx": 27,
+    "date": "2026-05-19",
+    "description": "CARD SETTLEMENT BATCH 1805",
+    "net": 35896.97
+   },
+   "cashbook_ref": "CRD-0518"
+  },
+  {
+   "statement": {
+    "idx": 28,
+    "date": "2026-05-19",
+    "description": "BACS CREDIT REF 231641 SME TRADE",
+    "net": 1510408.75
+   },
+   "cashbook_ref": "REM-0519"
+  },
+  {
+   "statement": {
+    "idx": 29,
+    "date": "2026-05-19",
+    "description": "FP FORKSERV EQUIPMENT HIRE",
+    "net": -310247.8
+   },
+   "cashbook_ref": "CAPEX-0519"
+  },
+  {
+   "statement": {
+    "idx": 30,
+    "date": "2026-05-20",
+    "description": "CARD SETTLEMENT BATCH 1905",
+    "net": 113686.68
+   },
+   "cashbook_ref": "CRD-0519"
+  },
+  {
+   "statement": {
+    "idx": 31,
+    "date": "2026-05-20",
+    "description": "BACS CREDIT REF 562203 PUBLIC FRAMEWORK",
+    "net": 618320.49
+   },
+   "cashbook_ref": "REM-0520"
+  },
+  {
+   "statement": {
+    "idx": 32,
+    "date": "2026-05-21",
+    "description": "CARD SETTLEMENT BATCH 2005",
+    "net": 39467.26
+   },
+   "cashbook_ref": "CRD-0520"
+  },
+  {
+   "statement": {
+    "idx": 33,
+    "date": "2026-05-21",
+    "description": "BACS CREDIT REF 251059 FM COMPANY",
+    "net": 1504762.25
+   },
+   "cashbook_ref": "REM-0521"
+  },
+  {
+   "statement": {
+    "idx": 34,
+    "date": "2026-05-22",
+    "description": "CARD SETTLEMENT BATCH 2105",
+    "net": 96048.65
+   },
+   "cashbook_ref": "CRD-0521"
+  },
+  {
+   "statement": {
+    "idx": 35,
+    "date": "2026-05-22",
+    "description": "BACS CREDIT REF 839275 PUBLIC FRAMEWORK",
+    "net": 730842.94
+   },
+   "cashbook_ref": "REM-0522"
+  },
+  {
+   "statement": {
+    "idx": 36,
+    "date": "2026-05-22",
+    "description": "HMRC PAYE NI",
+    "net": -1770384.0
+   },
+   "cashbook_ref": "HMRC-0522"
+  },
+  {
+   "statement": {
+    "idx": 37,
+    "date": "2026-05-26",
+    "description": "CARD SETTLEMENT BATCH 2205",
+    "net": 55009.68
+   },
+   "cashbook_ref": "CRD-0522"
+  },
+  {
+   "statement": {
+    "idx": 38,
+    "date": "2026-05-26",
+    "description": "BACS CREDIT REF 118888 NHS TRUST",
+    "net": 1340121.28
+   },
+   "cashbook_ref": "REM-0526"
+  },
+  {
+   "statement": {
+    "idx": 39,
+    "date": "2026-05-26",
+    "description": "BACS PAYMENT RUN 0521",
+    "net": -4769114.58
+   },
+   "cashbook_ref": "RUN-0521"
+  },
+  {
+   "statement": {
+    "idx": 40,
+    "date": "2026-05-27",
+    "description": "CARD SETTLEMENT BATCH 2605",
+    "net": 70532.69
+   },
+   "cashbook_ref": "CRD-0526"
+  },
+  {
+   "statement": {
+    "idx": 41,
+    "date": "2026-05-27",
+    "description": "BACS CREDIT REF 433825 MANUFACTURER",
+    "net": 1203712.78
+   },
+   "cashbook_ref": "REM-0527"
+  },
+  {
+   "statement": {
+    "idx": 42,
+    "date": "2026-05-27",
+    "description": "FP NORTHGATE SYSTEMS",
+    "net": -146684.1
+   },
+   "cashbook_ref": "CAPEX-0527"
+  },
+  {
+   "statement": {
+    "idx": 43,
+    "date": "2026-05-28",
+    "description": "CARD SETTLEMENT BATCH 2705",
+    "net": 63353.3
+   },
+   "cashbook_ref": "CRD-0527"
+  },
+  {
+   "statement": {
+    "idx": 44,
+    "date": "2026-05-28",
+    "description": "BACS CREDIT REF 834172 PUBLIC FRAMEWORK",
+    "net": 1371458.47
+   },
+   "cashbook_ref": "REM-0528"
+  },
+  {
+   "statement": {
+    "idx": 45,
+    "date": "2026-05-28",
+    "description": "SALARIES BACS",
+    "net": -2089440.0
+   },
+   "cashbook_ref": "PAY-0528"
+  },
+  {
+   "statement": {
+    "idx": 46,
+    "date": "2026-05-29",
+    "description": "CARD SETTLEMENT BATCH 2805",
+    "net": 72182.02
+   },
+   "cashbook_ref": "CRD-0528"
+  },
+  {
+   "statement": {
+    "idx": 47,
+    "date": "2026-05-29",
+    "description": "ACCOUNT CHARGES",
+    "net": -1842.17
+   },
+   "cashbook_ref": "CHG-0529"
+  }
+ ]
+}

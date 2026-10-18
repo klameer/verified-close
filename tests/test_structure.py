@@ -23,6 +23,12 @@ def test_upstream_files_are_verbatim_or_marked():
     assert r.returncode == 0, r.stdout
 
 
+def test_published_run_matches_its_close_log():
+    r = subprocess.run([sys.executable, str(ROOT / "tools" / "verify_seals.py")],
+                       capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout
+
+
 def test_every_skill_has_frontmatter_matching_its_folder():
     for skill in SKILLS.iterdir():
         text = (skill / "SKILL.md").read_text(encoding="utf-8")

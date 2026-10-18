@@ -73,7 +73,7 @@ def main(rec_path: str, period_label: str, reviewer: str, out_path: str,
         ws.append(r)
     for row_idx in (1, 2):
         ws.cell(row=row_idx, column=1).font = Font(bold=True)
-    ws.column_dimensions["A"].width = 62
+    ws.column_dimensions["A"].width = 80
     ws.column_dimensions["B"].width = 16
     ws.column_dimensions["C"].width = 46
     for row in ws.iter_rows(min_col=2, max_col=2):

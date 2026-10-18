@@ -39,7 +39,7 @@ def append(close, step: str, result_path: Path, reviewer: str, note: str = "",
     }
     if note:
         record["note"] = note
-    with open(close.log_path, "a", encoding="utf-8") as f:
+    with open(close.log_path, "a", encoding="utf-8", newline="\n") as f:
         f.write(json.dumps(record) + "\n")
     print(f"close log: {step} signed by {reviewer}, sealed sha256 {record['result_sha256'][:12]}"
           + (f" (+{len(also_sealed)} file(s))" if also_sealed else "")

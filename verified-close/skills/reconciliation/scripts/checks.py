@@ -15,10 +15,10 @@ import sys
 
 
 def main(statement_path, cashbook_path, opening_path, rec_path) -> None:
-    stmt = json.load(open(statement_path))["rows"]
-    cb = json.load(open(cashbook_path))
-    opening = json.load(open(opening_path))
-    rec = json.load(open(rec_path))
+    stmt = json.load(open(statement_path, encoding="utf-8"))["rows"]
+    cb = json.load(open(cashbook_path, encoding="utf-8"))
+    opening = json.load(open(opening_path, encoding="utf-8"))
+    rec = json.load(open(rec_path, encoding="utf-8"))
     failures = []
 
     for prev, cur in zip(stmt, stmt[1:]):

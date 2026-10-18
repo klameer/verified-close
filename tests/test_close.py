@@ -1,12 +1,28 @@
 """The close, end to end, and every way it is meant to refuse."""
+import hashlib
 import json
 
 from openpyxl import load_workbook
 
 
+def sha256(path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
 def test_golden_set_is_green(close):
     out = close.ok("run_goldens.py")
     assert "golden set: 8/8 green" in out
+
+
+def test_figures_are_byte_identical_to_the_recorded_run(close):
+    """Same inputs, same bytes, on any machine: the sealed figures of showcase/may-26."""
+    close.ok("run_step1.py")
+    close.ok("sign_step1.py", "KL", "K. Lameer", "reissue")
+    close.ok("run_step2.py")
+    assert sha256(close.work / "step1" / "reconciliation.json") == \
+        "44fc053f059d5f0f36be4df54d9a03b9026645837c6473469c569bf23c570dcc"
+    assert sha256(close.work / "step2" / "variance.json") == \
+        "9e007c8f0143ba771165547281532b244034e250319cf83ccf256e15d90fccc8"
 
 
 def test_full_close_end_to_end(close):

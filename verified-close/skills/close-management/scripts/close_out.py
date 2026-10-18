@@ -36,7 +36,7 @@ def main(toml: str) -> None:
               "reviewer": close.records()["step3"]["reviewer"],
               "result_file": filed.relative_to(close.root).as_posix(),
               "result_sha256": sha256(filed)}
-    with open(close.log_path, "a", encoding="utf-8") as f:
+    with open(close.log_path, "a", encoding="utf-8", newline="\n") as f:
         f.write(json.dumps(record) + "\n")
     shutil.copyfile(close.log_path, close.folder("filing") / "close-log.jsonl")
     close.confirm_filed([binder.name, "close-log.jsonl"])

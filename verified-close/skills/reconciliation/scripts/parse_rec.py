@@ -57,7 +57,7 @@ def main(xlsx_path: str, out_path: str, period_end: str) -> None:
     assert result["bank_balance_gbp"] and result["book_balance_gbp"] and result["items"]
     tie = result["bank_balance_gbp"] + sum(i["amount_gbp"] for i in result["items"])
     assert abs(tie - result["book_balance_gbp"]) < 0.01, "parsed rec does not tie"
-    json.dump(result, open(out_path, "w"), indent=1)
+    json.dump(result, open(out_path, "w", encoding="utf-8", newline="\n"), indent=1)
     print(f"parsed {len(result['items'])} opening item(s); rec ties -> {out_path}")
 
 

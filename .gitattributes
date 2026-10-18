@@ -2,3 +2,6 @@
 *.xlsx binary
 *.pptx binary
 *.pdf binary
+*.png binary
+# the recorded run is published byte-exact, so every sha256 in its close log verifies
+showcase/** -text

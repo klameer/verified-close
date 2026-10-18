@@ -64,7 +64,7 @@ def main(tb_path: str, budget_path: str, period: str, threshold_k: str, outdir: 
     }
     out = Path(outdir)
     out.mkdir(parents=True, exist_ok=True)
-    json.dump(result, open(out / "variance.json", "w", encoding="utf-8"), indent=1)
+    json.dump(result, open(out / "variance.json", "w", encoding="utf-8", newline="\n"), indent=1)
 
     wb = openpyxl.Workbook()
     ws = wb.active

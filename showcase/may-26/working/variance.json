@@ -1,0 +1,109 @@
+{
+ "report": "MTD variance vs budget",
+ "period": "May-26",
+ "units": "GBP thousands",
+ "flag_threshold_k": 100.0,
+ "line_count": 12,
+ "flagged_count": 3,
+ "total_actual_k": 42234.0,
+ "total_budget_k": 41689.0,
+ "total_variance_k": 545.0,
+ "lines": [
+  {
+   "line": "Facilities & Safety Supplies",
+   "mtd_actual_k": 8343.0,
+   "mtd_budget_k": 8216.0,
+   "variance_k": 127.0,
+   "variance_pct": 1.5,
+   "flagged": true
+  },
+  {
+   "line": "Industrial Consumables & Packaging",
+   "mtd_actual_k": 8464.0,
+   "mtd_budget_k": 8361.0,
+   "variance_k": 103.0,
+   "variance_pct": 1.2,
+   "flagged": true
+  },
+  {
+   "line": "Office & Print Solutions",
+   "mtd_actual_k": 4256.0,
+   "mtd_budget_k": 4176.0,
+   "variance_k": 80.0,
+   "variance_pct": 1.9,
+   "flagged": false
+  },
+  {
+   "line": "Cost of goods sold",
+   "mtd_actual_k": 15843.0,
+   "mtd_budget_k": 15599.0,
+   "variance_k": 244.0,
+   "variance_pct": 1.6,
+   "flagged": true
+  },
+  {
+   "line": "Warehouse & Logistics",
+   "mtd_actual_k": 1661.0,
+   "mtd_budget_k": 1663.0,
+   "variance_k": -2.0,
+   "variance_pct": -0.1,
+   "flagged": false
+  },
+  {
+   "line": "Sales & Account Management",
+   "mtd_actual_k": 1257.0,
+   "mtd_budget_k": 1230.0,
+   "variance_k": 27.0,
+   "variance_pct": 2.2,
+   "flagged": false
+  },
+  {
+   "line": "Procurement & Merchandising",
+   "mtd_actual_k": 597.0,
+   "mtd_budget_k": 586.0,
+   "variance_k": 11.0,
+   "variance_pct": 1.9,
+   "flagged": false
+  },
+  {
+   "line": "IT & Digital",
+   "mtd_actual_k": 521.0,
+   "mtd_budget_k": 519.0,
+   "variance_k": 2.0,
+   "variance_pct": 0.4,
+   "flagged": false
+  },
+  {
+   "line": "General & Administrative",
+   "mtd_actual_k": 796.0,
+   "mtd_budget_k": 807.0,
+   "variance_k": -11.0,
+   "variance_pct": -1.4,
+   "flagged": false
+  },
+  {
+   "line": "Depreciation & amortisation",
+   "mtd_actual_k": 400.0,
+   "mtd_budget_k": 400.0,
+   "variance_k": 0.0,
+   "variance_pct": 0.0,
+   "flagged": false
+  },
+  {
+   "line": "Interest expense, net",
+   "mtd_actual_k": 132.0,
+   "mtd_budget_k": 132.0,
+   "variance_k": 0.0,
+   "variance_pct": 0.0,
+   "flagged": false
+  },
+  {
+   "line": "Taxation",
+   "mtd_actual_k": -36.0,
+   "mtd_budget_k": 0.0,
+   "variance_k": -36.0,
+   "variance_pct": null,
+   "flagged": false
+  }
+ ]
+}

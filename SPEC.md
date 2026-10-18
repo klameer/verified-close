@@ -37,7 +37,7 @@ finance repo has a computing script or a gate.
 | close-management | close-checklist | Merge. Their T-3..T+5 checklist, dependency map and status definitions stay as method. Our orchestrator, gates, status board and close log become the run path. | scripted + gated |
 | reconciliation | bank-rec | Merge. Their GL-to-subledger, bank and intercompany method stays. The bank account gets our scripted path (parse, reconcile, checks, workbook, gate). GL and intercompany stay method. | bank: scripted + gated; others: guidance only |
 | variance-analysis | variance-report | Merge. Their decomposition and narrative template are applied on top of our script's numbers. Materiality comes from config. | scripted + gated |
-| financial-statements | pack-build | Both ship. Statements as upstream. pack-build fills the management pack from signed figures only. | statements: guidance only; pack: scripted + gated |
+| financial-statements | pack-build | Both ship. Statements as upstream. pack-build ships as the new `management-pack` skill and fills the pack from signed figures only. | statements: guidance only; pack: scripted + gated |
 | journal-entry, journal-entry-prep | — | As upstream. | guidance only |
 | audit-support | (binder) | As upstream. Our close-out binder is cited as the evidence it asks for. | guidance only |
 | sox-testing | — | As upstream. | guidance only |
@@ -51,7 +51,7 @@ The README carries this table. A guidance-only skill is never presented as verif
 verified-close/                      the plugin
   .claude-plugin/plugin.json
   CONNECTORS.md                      upstream, plus the files-folder input
-  skills/<8 upstream names + pack-build>/SKILL.md (+ scripts/ where scripted)
+  skills/<8 upstream names + management-pack>/SKILL.md (+ scripts/ where scripted)
 examples/caldergate/                 fictional close folder (close-v2) + close.yaml
 tests/                               unit, goldens G1-G6, gate tests, structure
 tools/sync_upstream.py               diff against the pinned upstream SHA
